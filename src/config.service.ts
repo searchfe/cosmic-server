@@ -56,6 +56,9 @@ export class ConfigService {
     get DB_PASSWORD() {return this.envConfig.DB_PASSWORD;}
     get DB_DATABASE() {return this.envConfig.DB_DATABASE;}
 
+    get JWT_SECRET() {return this.envConfig.JWT_SECRET}
+    get JWT_SIGN_EXPIRES() {return this.envConfig.JWT_SIGN_EXPIRES}
+
     get uploadTempFolder(): string {return this.resolveLocal(this.envConfig.TEMP_FLODER);}
 
     get userAvatarFolder(): string {return this.resolveLocal(this.envConfig.USER_AVATAR_FLODER);}
@@ -87,6 +90,8 @@ export class ConfigService {
             DB_USERNAME: Joi.string().allow('').allow(null),
             DB_PASSWORD: Joi.string().allow('').allow(null),
             DB_DATABASE: Joi.string().required(),
+            JWT_SIGN_EXPIRES: Joi.string().required(),
+            JWT_SECRET: Joi.string().required()
           // PORT: Joi.number().default(3000),
           // API_AUTH_ENABLED: Joi.boolean().required(),
         });
@@ -102,4 +107,4 @@ export class ConfigService {
     }
 }
 
-export let config: ConfigService = new ConfigService(`${process.env.NODE_ENV}.env`);
+export const config: ConfigService = new ConfigService(`${process.env.NODE_ENV}.env`);
