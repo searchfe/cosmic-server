@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Param, Put, Delete, Body, UseGuards } from '@nestjs/common';
-import { MemberService } from './member.service';
+import { UserService } from './user.service';
 
 @Controller('member0')
-export class MemberController {
-    constructor(private service: MemberService){}
+export class UserController {
+    constructor(private service: UserService){}
 
     @Post()
     create(@Body() createCatDto: any) {

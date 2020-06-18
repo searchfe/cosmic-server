@@ -1,8 +1,9 @@
+import "reflect-metadata";
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from './config.service';
-import { HttpExceptionFilter } from './server/common/filters/http-exception.filter';
+import { HttpExceptionFilter } from './server/common/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
