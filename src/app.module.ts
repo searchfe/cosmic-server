@@ -1,3 +1,4 @@
+import { SpecificationModule } from '@server/specification/specification.module';
 // import { AuthModule } from './server/auth/auth.module';
 // import { AppController } from './app.controller';
 import { Module } from '@nestjs/common';
@@ -33,6 +34,7 @@ import { WebModule } from './server/web/web.module';
         UserModule,
         TeamModule,
         WebModule,
+        SpecificationModule,
         // AuthModule,
     ],
     // controllers: [AppController],

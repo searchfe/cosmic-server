@@ -8,7 +8,7 @@ import { Column, Entity, ObjectIdColumn } from 'typeorm';
 export class Team extends BaseEntity {
     @Field(type => ID)
     @ObjectIdColumn()
-    id: string;
+    id: ObjectID;
 
     @Field(type => String)
     @Column({ length: 32 })
@@ -25,7 +25,7 @@ export class Team extends BaseEntity {
 
 @ObjectType()
 export class TeamMemer {
-    @Field(type => String)
+    @Field(type => ID)
     @Column()
     user: ObjectID;
 
