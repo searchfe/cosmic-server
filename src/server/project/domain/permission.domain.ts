@@ -14,7 +14,7 @@ export enum ProjectPermissionEnum {
 @Entity()
 @ObjectType()
 export class ProjectPermisson {
-    @Field(type => ID)
+    @Field(type => String)
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
