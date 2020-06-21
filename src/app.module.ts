@@ -1,13 +1,13 @@
 // import { AuthModule } from './server/auth/auth.module';
 // import { AppController } from './app.controller';
-import { Module, Inject } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
-import { GraphQLModule, GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql';
-import { UserModule } from './server/user/user.module';
-// import { TeamModule } from './server/team/team.module';
-import { WebModule } from './server/web/web.module';
 import { config, ConfigService } from './config.service';
+import { TeamModule } from './server/team/team.module';
+import { UserModule } from './server/user/user.module';
+import { WebModule } from './server/web/web.module';
 
 @Module({
     imports: [
@@ -31,7 +31,7 @@ import { config, ConfigService } from './config.service';
             context: ({ req }) => ({ req }),
         }),
         UserModule,
-        // TeamModule,
+        TeamModule,
         WebModule,
         // AuthModule,
     ],

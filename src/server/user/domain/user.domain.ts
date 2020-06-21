@@ -1,10 +1,15 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Entity, Column } from 'typeorm';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '@server/common/base-entity';
+import { ObjectID } from 'mongodb';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class User extends BaseEntity{
+    @Field(type => ID)
+    @ObjectIdColumn()
+    id: ObjectID;
+
     @Field(type => String)
     @Column({length: 64, nullable: true})
     email: string;
