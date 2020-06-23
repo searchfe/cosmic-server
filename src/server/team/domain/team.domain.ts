@@ -1,18 +1,35 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { PrimaryGeneratedColumn, Entity, Column , CreateDateColumn } from 'typeorm';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { BaseEntity } from '@server/common/base-entity';
+import { ObjectID } from 'mongodb';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
-export class Team {
+export class Team extends BaseEntity {
     @Field(type => ID)
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @ObjectIdColumn()
+    id: ObjectID;
 
     @Field(type => String)
-    @Column({length: 32, nullable: true})
+    @Column({ length: 32 })
     name: string;
 
-    @Field()
-    @CreateDateColumn()
-    createdDate: Date;
+    @Field(type => ID)
+    @Column()
+    owner: ObjectID;
+
+    @Field(type => [TeamMemer])
+    @Column(type => TeamMemer)
+    members: TeamMemer[];
+}
+
+@ObjectType()
+export class TeamMemer {
+    @Field(type => ID)
+    @Column()
+    user: ObjectID;
+
+    @Field(type => String)
+    @Column()
+    permission: string;
 }

@@ -1,13 +1,14 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { PrimaryGeneratedColumn, Entity, Column , CreateDateColumn, OneToMany } from 'typeorm';
-// import { Location } from './location';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { BaseEntity } from '@server/common/base-entity';
+import { ObjectID } from 'mongodb';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
-export class User {
+export class User extends BaseEntity{
     @Field(type => ID)
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    @ObjectIdColumn()
+    id: ObjectID;
 
     @Field(type => String)
     @Column({length: 64, nullable: true})
@@ -32,12 +33,4 @@ export class User {
     @Field({nullable: true})
     @Column({length: 64, nullable: true})
     avatar?: string;
-
-    @Field({nullable: true})
-    @Column({length: 64, nullable: true})
-    blank?: string;
-
-    @Field()
-    @CreateDateColumn()
-    createdDate: Date;
 }

@@ -1,11 +1,8 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PickType } from '@nestjs/graphql';
 
 @InputType()
-export class UserInput {
-    @Field({nullable: true})
-    id?: string;
-
-    @Field()
+export class CreateUserInput {
+    @Field({ nullable: true })
     name?: string;
 
     @Field()
@@ -17,12 +14,15 @@ export class UserInput {
     @Field()
     email: string;
 
-    @Field({nullable: true})
+    @Field({ nullable: true })
     intro?: string;
 
-    @Field({nullable: true})
+    @Field({ nullable: true })
     avatar?: string;
+}
 
-    @Field({nullable: true})
-    blank?: string;
+@InputType()
+export class UpdateUserInput extends PickType(CreateUserInput, ['name', 'intro', 'avatar'] as const) {
+    @Field()
+    id: string;
 }
