@@ -1,14 +1,13 @@
-import { TeamService } from './../team/team.service';
-import { Resolver, Args, Query, Mutation, Field } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-import { Specification, Category, SpecificationItem } from './domain/specification.domain';
-import { CreateSpecificationInput, CreateCategoryInput, SpecificationItemInput } from './domain/specification.input';
-import { SpecificationService } from './specification.service';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { fileds2MongoQuery } from '@server/common/util/db';
+import { TeamService } from '@server/team/team.service';
 import { UserInputError } from 'apollo-server-core';
-import { ObjectID } from 'mongodb';
+import { CreateCategoryDTO, CreateSpecificationDTO, UpdateCategoryDTO, UpdateSpecificationDTO } from './schema/specification.dto';
+import { Category, Specification } from './schema/specification.schema';
+import { SpecificationService } from './specification.service';
 
-// TODO data validate
-@Resolver(of => Specification)
+@Resolver(() => Specification)
 export class SpecificationResolver {
     constructor(
         @Inject(SpecificationService)
@@ -17,91 +16,82 @@ export class SpecificationResolver {
         private readonly teamService: TeamService,
     ) {}
 
-    @Query(returns => Specification, { name: 'specification' })
+    @Query(() => Specification, { name: 'specification' })
     async getSpecification(
         @Args({ name: 'id' }) id: string,
-        @Args({ name: 'fields', type: () => [String]}) fields: Array<string>
+        @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>
     ) {
-        let fieldIsValid = true;
-        for (let i = 0; i < fields.length; i++) {
-            const specKey = fields[i];
-            if (!(specKey in Specification)) {
-                fieldIsValid = true;
-                break;
-            }
-        }
-        if (!fieldIsValid) {
-            throw new UserInputError('query fields is not valid');
-        }
-        return await this.specificationService.findOne(id, fields as (keyof Specification)[]);
+        const projection = fields ? fileds2MongoQuery(fields) : undefined;
+        return await this.specificationService.findOne(id, projection);
     }
 
-    @Query(returns => Category, { name: 'category' })
+    @Query(() => Category, { name: 'category' })
     async getCategory(
         @Args({ name: 'specificationId', type: () => String }) specificationId: string,
         @Args({ name: 'categoryId', type: () => String }) categoryId: string,
-        @Args({ name: 'fields', type: () => [String], nullable: true }) fields: Array<string>,
+        @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>,
     ) {
-        const result = await this.specificationService.findCategory(
-            specificationId,
-            { id: categoryId },
-            fields ? fields as (keyof Category)[] : undefined,
-        );
-        return result[0] || {};
+        const projection = fields && fields.length > 0 ? fileds2MongoQuery(fields || []) : undefined;
+        const result = await this.specificationService.getCategory(specificationId, {  name: '字体' }, projection);
+        return result;
     }
 
-    @Query(returns => SpecificationItem, { name: 'specificationItem' })
-    async getSpecificationItem(
-        @Args({ name: 'specificationId', type: () => String }) specificationId: string,
-        @Args({ name: 'categoryId', type: () => String }) categoryId: string,
-        @Args({ name: 'names', type: () => [String], nullable: true }) names?: Array<string>,
-    ) {
-        return await this.specificationService.findItems(specificationId, categoryId, names);
-    }
-
-    @Mutation(returns => Specification)
-    async createSpecification(@Args('specification') specification: CreateSpecificationInput) {
+    @Mutation(() => Specification)
+    async createSpecification(@Args('specification') specification: CreateSpecificationDTO) {
         const team = await this.teamService.findOne(specification.team);
-        if (!team) {
+        if (!team || !team._id) {
             throw new UserInputError('team not found');
         }
         return await this.specificationService.create({
-            team: team.id,
+            team: team._id,
             name: specification.name,
             categories: [],
         });
     }
 
-    @Mutation(returns => Category)
-    async addCategory(@Args('category') category: CreateCategoryInput) {
-        const specification = await this.specificationService.findOne(category.specificationId, ['id']);
+    @Mutation(() => Specification)
+    async updateSpecification(
+        @Args('specification')
+        specification: UpdateSpecificationDTO,
+        @Args({ name: 'fields', type: () => [String], description: "fields to return ", defaultValue: ['id', 'name'] })
+        fields: string[]
+    ) {
+        const projection = fileds2MongoQuery(fields);
+        const result = await this.specificationService.update(specification, projection);
+        return {
+            ...result,
+            id: result._id
+        };
+    }
+
+    @Mutation(() => ID)
+    async createCategory(@Args('category') category: CreateCategoryDTO) {
+        const specification = await this.getSpecification(category.specificationId, ['_id']);
         if (!specification) {
             throw new UserInputError('specification not found');
         }
-        const categories = await this.specificationService.findCategory(
+        const existingCategory= await this.specificationService.getCategory(
             category.specificationId,
-            { name: category.name, parent: null },
-            ['id']
+            { name: category.name },
+            { id: 1 }
         );
-        if (categories.length > 0) {
+        if (existingCategory && existingCategory.categories) {
             throw new UserInputError('category already exists');
         }
-        const newCategory: Record<string, unknown> = { name: category.name, items: [] };
-        if (category.parent) {
-            newCategory.parent = ObjectID.createFromHexString(category.parent);
-        }
-        return await this.specificationService.addCategory(category.specificationId, newCategory);
+        const newCategory: Record<string, unknown> = { ...category };
+        delete newCategory['specificationId'];
+        return await this.specificationService.createCategory(category.specificationId, newCategory);
     }
 
-    @Mutation(returns => SpecificationItem)
-    async saveItem(@Args('item') itemInput: SpecificationItemInput) {
-        return await this.specificationService.saveItem(
-            itemInput.specificationId,
-            itemInput.categoryId,
-            {
-                name: itemInput.name,
-                meta: itemInput.meta,
-            }
-        );
+    @Mutation(() => Boolean)
+    async updateCategory(@Args('category') category: UpdateCategoryDTO) {
+        const newCategory = { ...category };
+        delete newCategory.specificationId;
+        return await this.specificationService.updateCategory(category.specificationId, newCategory);
+    }
+
+    @Mutation(() => Boolean)
+    async deleteCategory(@Args('specificationId') specificationId: string, @Args('categoryId') categoryId: string) {
+        return await this.specificationService.deleteCategory(specificationId, categoryId);
     }
 }

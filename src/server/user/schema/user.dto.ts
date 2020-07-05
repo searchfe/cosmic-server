@@ -1,7 +1,7 @@
 import { InputType, Field, PickType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserDTO {
     @Field({ nullable: true })
     name?: string;
 
@@ -22,7 +22,7 @@ export class CreateUserInput {
 }
 
 @InputType()
-export class UpdateUserInput extends PickType(CreateUserInput, ['name', 'intro', 'avatar'] as const) {
+export class UpdateUserDTO extends PickType(CreateUserDTO, ['name', 'intro', 'avatar'] as const) {
     @Field()
     id: string;
 }

@@ -14,7 +14,7 @@ async function bootstrap() {
     maxAge: 3600,
   });
   const config = app.get(ConfigService);
-  app.useStaticAssets(config.LOCAL_STATIC_ROOT, { 
+  app.useStaticAssets(config.LOCAL_STATIC_ROOT, {
     prefix: config.STATIC_PREFIX,
   });
   app.useStaticAssets(`${config.LOCAL_WEB_ROOT}/`, {prefix: '/', dotfiles: "deny",index: false,});

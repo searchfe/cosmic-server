@@ -5,7 +5,7 @@ export enum PermissionEnum {
 }
 
 @InputType()
-export class CreateTeamInput {
+export class CreateTeamDTO {
     @Field()
     name: string;
 
@@ -14,7 +14,7 @@ export class CreateTeamInput {
 }
 
 @InputType()
-export class UpdateTeamInput {
+export class UpdateTeamDTO {
     @Field()
     id: string;
 
@@ -23,10 +23,10 @@ export class UpdateTeamInput {
 }
 
 @InputType()
-export class CreateTeamMemberInput {
+export class AddTeamMemberDTO {
     @Field()
     user: string;
 
-    @Field()
-    permission: PermissionEnum;
+    @Field({ nullable: true })
+    permission?: PermissionEnum;
 }

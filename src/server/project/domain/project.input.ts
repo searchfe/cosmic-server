@@ -1,7 +1,7 @@
-import { InputType, Field } from '@nestjs/graphql';
+// import { InputType, Field } from '@nestjs/graphql';
 
-@InputType()
-export class ProjectInput {
-    @Field()
-    name: string;
-}
+// @InputType()
+// export class ProjectInput {
+//     @Field()
+//     name: string;
+// }

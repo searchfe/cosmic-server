@@ -2,11 +2,11 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserInputError } from 'apollo-server-core';
 import { UserService } from './../user/user.service';
-import { Team, TeamMemer } from './domain/team.domain';
-import { CreateTeamInput, CreateTeamMemberInput, PermissionEnum, UpdateTeamInput } from './domain/team.input';
+import { AddTeamMemberDTO, CreateTeamDTO, PermissionEnum, UpdateTeamDTO } from './schema/team.dto';
+import { Team } from './schema/team.schema';
 import { TeamService } from './team.service';
 
-@Resolver(of => Team)
+@Resolver(() => Team)
 export class TeamResolver {
     constructor(
         @Inject(TeamService)
@@ -15,15 +15,15 @@ export class TeamResolver {
         private readonly userService: UserService
     ) {}
 
-    @Query(returns => Team, { name: 'team' })
+    @Query(() => Team, { name: 'team' })
     async getTeam(
         @Args({ name: 'id', type: () => String }) id: string,
-    ): Promise<Team> {
+    ) {
         return await this.teamService.findOne(id);
     }
 
-    @Mutation(returns => Team)
-    async addTeam(@Args('team') teamInput: CreateTeamInput): Promise<Team> {
+    @Mutation(() => Team)
+    async createTeam(@Args('team') teamInput: CreateTeamDTO): Promise<Team> {
         // user validation logit belongs to access control, move it in future
         const owner = await this.userService.findOne(teamInput.owner);
         if (!owner) {
@@ -33,22 +33,26 @@ export class TeamResolver {
         return await this.teamService.create(newTeam);
     }
 
-    @Mutation(returns => Team)
-    async updateTeam(@Args('team') teamInput: UpdateTeamInput): Promise<Team> {
+    @Mutation(() => Boolean)
+    async updateTeam(@Args('team') teamInput: UpdateTeamDTO) {
         const targetTeam = await this.teamService.findOne(teamInput.id);
         if (!targetTeam) {
             throw new UserInputError('team not found');
         }
-        return await this.teamService.update({
-            id: targetTeam.id,
+        const result = await this.teamService.update({
+            id: targetTeam._id,
             name: teamInput.name,
         });
+        if (result) {
+            return true;
+        }
+        return false;
     }
 
-    @Mutation(returns => TeamMemer)
-    async addMember(
+    @Mutation(() => Boolean)
+    async createMember(
         @Args('teamId') teamId: string,
-        @Args('member') member: CreateTeamMemberInput
+        @Args({ name: 'member', type: () => AddTeamMemberDTO }) member: AddTeamMemberDTO
     ) {
         const user = await this.userService.findOne(member.user);
         if (!user) {
@@ -58,19 +62,9 @@ export class TeamResolver {
         if (!team) {
             throw new UserInputError('team not found');
         }
-        if (team.members.filter(m => m.user === user.id).length > 0) {
-            throw new UserInputError('user already in team');
-        }
-        await this.teamService.update({
-            id: team.id,
-            members: [
-                ...team.members,
-                {
-                    user: user.id,
-                    permission: PermissionEnum.NORMAL,
-                }
-            ],
-        });
-        return member;
+        return await this.teamService.createMember(
+            team._id,
+            { user: member.user, permission: member.permission || PermissionEnum.NORMAL }
+        );
     }
 }
