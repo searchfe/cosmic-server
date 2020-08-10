@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as S } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { TypeEnum } from './project.dto';
 
 @ObjectType()
@@ -11,7 +11,7 @@ export class Project extends Document {
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
-    team: S.Types.ObjectId;
+    team: Types.ObjectId;
 
     @Field(() => String)
     @Prop({ maxlength: 32, required: true })

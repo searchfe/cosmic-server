@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as S, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 @ObjectType()
@@ -14,15 +14,15 @@ export class Level extends Document{
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
-    specification: S.Types.ObjectId
+    specification: Types.ObjectId
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
-    category: S.Types.ObjectId;
+    category: Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ auto: false })
-    parent?: S.Types.ObjectId;
+    parent?: Types.ObjectId;
 
     @Field(() => [Item], { nullable: true })
     @Prop(() => Item)

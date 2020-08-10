@@ -25,6 +25,11 @@ export class SpecificationResolver {
         return await this.specificationService.findOne(id, projection);
     }
 
+    @Query(() => [Specification])
+    async getAllSpecification(@Args({ name: 'teamId',  type: () => String }) teamId: string) {
+        return await this.specificationService.findAll(teamId);
+    }
+
     @Query(() => Category, { name: 'category' })
     async getCategory(
         @Args({ name: 'specificationId', type: () => String }) specificationId: string,

@@ -16,9 +16,18 @@ export class SpecificationService {
 
     async findOne(specificationId: string, fields?: MongoProjection) {
         if (!fields) {
-            return await this.specificationModel.findById(specificationId).lean().exec();
+            return await this.specificationModel.findById(specificationId).exec();
         }
-        return await this.specificationModel.findById(specificationId).select(fields).lean().exec();
+        return await this.specificationModel.findById(specificationId).select(fields).exec();
+    }
+
+    async findAll(teamId: string) {
+        const result = await this.specificationModel.where('team').equals(Types.ObjectId(teamId)).lean().exec();
+        return result.map(res => {
+            const item = { ...res, id: res._id };
+            delete item._id;
+            return item;
+        });
     }
 
     async getCategory(specificationId: string, categoryCondition: { [key in keyof Category]?: unknown }, fields?: MongoProjection) {

@@ -32,6 +32,14 @@ export class LevelResolver {
         return result;
     }
 
+    @Query(() => [Level], { name: 'levels' })
+    async getLevels(
+        @Args({ name: 'specification' }) specification: string,
+        @Args({ name: 'categories', type: () => [String] }) categories: Array<string>,
+    ) {
+        return await this.levelService.findAll(specification, categories);
+    }
+
     @Mutation(() => Level)
     async createLevel(@Args('level') level: CreateLevelDTO) {
         const spec = await this.specificationService.getCategory(

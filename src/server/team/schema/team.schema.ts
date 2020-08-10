@@ -1,6 +1,6 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as S, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { PermissionEnum } from './team.dto';
 
 @ObjectType()
@@ -16,7 +16,7 @@ export class Team extends Document {
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
-    owner: S.Types.ObjectId;
+    owner: Types.ObjectId;
 
     @Field(() => [TeamMemer])
     @Prop()

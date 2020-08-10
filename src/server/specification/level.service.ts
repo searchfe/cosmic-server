@@ -19,9 +19,20 @@ export class LevelService {
         return await this.levelModel.findById(levelId).select(fields).lean().exec();
     }
 
+    async findAll(specificationId: string, categories: Array<string>) {
+        const result = await this.levelModel.find({
+            specification: Types.ObjectId(specificationId),
+            category: { $in: categories.map(ct => Types.ObjectId(ct)) }
+        }).exec();
+        return result;
+    }
+
     async create(level: CreateLevelDTO) {
         const formatedLevel = {
             ...level,
+            specification: Types.ObjectId(level.specification),
+            category: Types.ObjectId(level.category),
+            parent: Types.ObjectId(level.parent),
             items: level.items.map(item => ({ ...item, id: new Types.ObjectId() }))
         };
         const newLevel = new this.levelModel(formatedLevel);
