@@ -1,30 +1,41 @@
-import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
-import { Inject } from '@nestjs/common';
-import { Project } from './domain/project.domain';
-import { ProjectInput } from './domain/project.input';
+import { TeamService } from '@server/team/team.service';
+import { fileds2MongoQuery } from '@server/common/util/db';
 import { ProjectService } from './project.service';
+import { Inject } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UserInputError } from 'apollo-server-core';
+import { Project } from './schema/project.schema';
+import { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
 
-// TODO data validate
-@Resolver(of => Project)
+@Resolver(() => Project)
 export class ProjectResolver {
-    constructor(@Inject(ProjectService)
+    constructor(
+        @Inject(ProjectService)
         private readonly projectService: ProjectService,
+        @Inject(TeamService)
+        private readonly teamService: TeamService
     ) {}
 
-    @Query(returns => Project, { name: 'project' })
-    async getProject(@Args({ name: 'id', type: () => String }) id: string):Promise<Project> {
-        return await this.projectService.findOne(id);
+    @Query(() => Project, { name: 'project' })
+    async getProject(@Args({ name: 'id', type: () => String }) id: string) {
+        const result = await this.projectService.findOne(id);
+        return {
+            ...result,
+            id: result._id
+        };
     }
 
-    @Mutation(returns => Project)
-    async addProject(@Args('project') project: ProjectInput) {
-      await this.projectService.create(project);
-      return project;
+    @Mutation(() => Project)
+    async createProject(@Args('project') project: CreateProjectDTO) {
+        const team = await this.teamService.findOne(project.team);
+        if (!team || !team._id) {
+            throw new UserInputError('team not found');
+        }
+        return await this.projectService.create(project);
     }
 
-    @Mutation(returns => Project)
-    async modifyProject(@Args('project') project: ProjectInput) {
-      return this.projectService.modify(project);
+    @Mutation(() => Boolean)
+    async updateProject( @Args('project') project: UpdateProjectDTO) {
+        return await this.projectService.update(project);
     }
-
 }

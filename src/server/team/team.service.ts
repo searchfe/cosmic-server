@@ -1,25 +1,45 @@
+import { PermissionEnum } from './schema/team.dto';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Team } from './domain/team.domain';
+import { Team } from './schema/team.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { MongoProjection } from '@server/common/types';
 
 @Injectable()
 export class TeamService {
     constructor(
-        @InjectRepository(Team)
-        private readonly teamRepository: Repository<Team>
+        @InjectModel(Team.name)
+        private readonly teamModel: Model<Team>
     ) {}
 
-    async findOne(teamId: string) {
-        return await this.teamRepository.findOne(teamId);
+    async findOne(teamId: string, fields?: MongoProjection) {
+        if (!fields) {
+            return await this.teamModel.findById(teamId).exec();
+        }
+        return await this.teamModel.findById(teamId).select(fields).lean().exec();
     }
 
-    async create(team: Partial<Team>) {
-        return await this.teamRepository.save(team);
+    async create(team: Pick<Team, 'name' | 'members'> & { owner: string }) {
+        const createTeam = { ...team, owner: Types.ObjectId(team.owner) };
+        const result = await this.teamModel.create(createTeam);
+        return result;
     }
 
-    async update(team: Partial<Team>) {
-        return await this.teamRepository.save(team);
+    async update(team: Pick<Team, 'name' | 'id'>) {
+        const updateTeam = { ...team };
+        delete updateTeam.id;
+        return await this.teamModel.findByIdAndUpdate(team.id, updateTeam, { new: true }).exec();
+    }
+
+    async createMember(teamId: string, member: { user: string, permission: PermissionEnum}): Promise<boolean> {
+        const result =  await this.teamModel.findByIdAndUpdate(
+            teamId,
+            { $addToSet: { members: { user: Types.ObjectId(member.user), permission: member.permission } } }
+        ).select({ id: 0 }).exec();
+        if (result) {
+            return true;
+        }
+        return false;
     }
 
     // async findAll(userId: string) {

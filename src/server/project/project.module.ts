@@ -1,11 +1,18 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProjectService } from './project.service';
-import { Project } from './domain/project.domain';
 import { ProjectResolver } from './project.resolver';
+import { ProjectService } from './project.service';
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Team, TeamSchema } from '@server/team/schema/team.schema';
+import { TeamService } from '@server/team/team.service';
+import { Project, ProjectSchema } from './schema/project.schema';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project])],
-  providers: [ProjectService, ProjectResolver]
+    imports: [
+        MongooseModule.forFeature([
+            { name: Project.name, schema: ProjectSchema },
+            { name: Team.name, schema: TeamSchema },
+        ]),
+    ],
+  providers: [TeamService, ProjectService, ProjectResolver]
 })
-export class ProjectModule {}
+export class ProjectionModule {}

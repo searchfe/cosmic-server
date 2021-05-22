@@ -1,46 +1,38 @@
-import { SpecificationModule } from '@server/specification/specification.module';
-// import { AuthModule } from './server/auth/auth.module';
 // import { AppController } from './app.controller';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ProjectionModule } from '@server/project/project.module';
+import { SpecificationModule } from '@server/specification/specification.module';
 import { config, ConfigService } from './config.service';
 import { TeamModule } from './server/team/team.module';
 import { UserModule } from './server/user/user.module';
 import { WebModule } from './server/web/web.module';
+import { join } from 'path';
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: config.DB_TYPE,
-            host: config.DB_HOST,
-            port: config.DB_PORT,
-            // username: config.DB_USERNAME,
-            // password: config.DB_PASSWORD,
-            database: config.DB_DATABASE,
-            entities: [
-                `${__dirname}/**/**.domain.**`,
-                `${__dirname}/**/**.entity.**`,
-            ],
-            synchronize: true,
-        }),
+        MongooseModule.forRoot(
+            `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`,
+        ),
         GraphQLModule.forRoot({
             installSubscriptionHandlers: true,
             autoSchemaFile: `${__dirname}/schema.gql`,
             path: '/api/graphql',
             context: ({ req }) => ({ req }),
+            definitions: {
+                path: join(process.cwd(), 'dist/graphql.d.ts'),
+            },
         }),
         UserModule,
         TeamModule,
         WebModule,
         SpecificationModule,
-        // AuthModule,
+        ProjectionModule,
     ],
     // controllers: [AppController],
     providers: [],
 })
-
 export class AppModule {
-    constructor(private config: ConfigService, private connectin: Connection) {}
+    constructor(private config: ConfigService) {}
 }
