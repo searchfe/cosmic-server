@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { MongoProjection } from '@server/common/types';
 import { isSuccessfulQuery } from '@server/common/util/db';
 import { Model, Types } from 'mongoose';
-import { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto'
+import { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
 
 @Injectable()
 export class ProjectService {
