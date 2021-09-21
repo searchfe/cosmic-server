@@ -13,6 +13,6 @@ export function fileds2MongoQuery(includes: Array<string>, excludes: Array<strin
     return result;
 }
 
-export function isSuccessfulQuery(result: Record<string, unknown>) {
+export function isSuccessfulQuery(result: Record<string, unknown> | any) {
     return result && result.ok && result.n;
 }

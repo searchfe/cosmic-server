@@ -99,7 +99,7 @@ export class SpecificationService {
                 $elemMatch: { id: Types.ObjectId(categoryId) }
             }
         } , { $pop: { categories: -1 } });
-        if (isSuccessfulQuery(result)) {
+        if (isSuccessfulQuery(result as unknown as Record<string, unknown>)) {
             return true;
         }
         return false;

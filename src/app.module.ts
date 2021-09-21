@@ -9,6 +9,7 @@ import { TeamModule } from './server/team/team.module';
 import { UserModule } from './server/user/user.module';
 import { WebModule } from './server/web/web.module';
 import { join } from 'path';
+import { DesignSystemModule } from './server/design-system/design-system.module';
 
 @Module({
     imports: [
@@ -23,12 +24,14 @@ import { join } from 'path';
             definitions: {
                 path: join(process.cwd(), 'dist/graphql.d.ts'),
             },
+            plugins: []
         }),
         UserModule,
         TeamModule,
         WebModule,
         SpecificationModule,
         ProjectionModule,
+        DesignSystemModule,
     ],
     // controllers: [AppController],
     providers: [],
