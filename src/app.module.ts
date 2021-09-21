@@ -24,6 +24,7 @@ import { DesignSystemModule } from './server/design-system/design-system.module'
             definitions: {
                 path: join(process.cwd(), 'dist/graphql.d.ts'),
             },
+            plugins: []
         }),
         UserModule,
         TeamModule,

@@ -1,5 +1,5 @@
 import { Field, ObjectType, ID, registerEnumType } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export enum ETextAlignVertical {
@@ -8,6 +8,8 @@ export enum ETextAlignVertical {
     BOTTOM = "BOTTOM",
 };
 
+registerEnumType(ETextAlignVertical, { name: 'ETextAlignVertical' });
+
 export enum ETextAlignHorizontal {
     LEFT = "LEFT",
     CENTER = "CENTER",
@@ -15,41 +17,42 @@ export enum ETextAlignHorizontal {
     JUSTIFIED = "JUSTIFIED",
 };
 
-// TODO: extract it to common
-export enum EUnit {
-    PIXELS = "px",
-    PERCENT = "%",
+registerEnumType(ETextAlignHorizontal, { name: 'ETextAlignHorizontal' });
+
+/**
+ * From the point of design, this should be devided into two enum
+ * , and the schema field letterspace should be an union type, however,
+ * which is not supported in input type. There it's proper to use just one enum
+ * and data validator in DML
+ * see:
+ * https://github.com/graphql/graphql-spec/issues/488
+ * https://github.com/graphql/graphql-js/issues/207
+ */
+export enum ETextUnit {
+    PIXELS = "PIXELS",
+    PERCENT = "PERCENT",
+    AUTO = "AUTO",
 }
 
-registerEnumType(ETextAlignVertical, {
-    name: 'ETextAlignVertical'
-});
+registerEnumType(ETextUnit, { name: 'ETextUnit' });
 
-registerEnumType(ETextAlignHorizontal, {
-    name: 'ETextAlignHorizontal'
-});
 
-registerEnumType(EUnit, {
-    name: 'EUnit'
-});
+@ObjectType()
+export class TextValueProp {
+    value: number;
+    /**
+     * support PIXELS and PERCENT, line-height also can be AUTO
+     */
+    unit: ETextUnit;
+}
 
 @ObjectType()
 export class FontName {
     @Field()
     family: string;
 
-    @Field()
+    @Field({ description: 'font-style' })
     style: string;
-}
-
-
-@ObjectType()
-export class Space {
-    @Field()
-    value: number;
-
-    @Field(() => EUnit)
-    unit: EUnit;
 }
 
 @Schema({ timestamps: true })
@@ -57,30 +60,12 @@ export class Space {
 export class Text extends Document {
     @Field(() => ID)
     id: string;
-
-    @Field(() => ETextAlignHorizontal)
-    @Prop()
     textAlignHorizontal: ETextAlignHorizontal;
-
-    @Field(() => ETextAlignVertical)
-    @Prop()
     textAlignVertical: ETextAlignVertical;
-
-    @Field()
-    @Prop()
     fontSize: number;
-
-    @Field(() => FontName)
-    @Prop(() => FontName)
     fontName: FontName;
-
-    @Field(() => Space)
-    @Prop(() => Space)
-    letterSpacing: Space;
-
-    @Field(() => Space)
-    @Prop(() => Space)
-    lineHeight: Space;
+    letterSpacing: TextValueProp;
+    lineHeight: TextValueProp;
 }
 
 export const TextSchema = SchemaFactory.createForClass(Text);

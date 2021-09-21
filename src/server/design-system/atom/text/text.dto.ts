@@ -1,41 +1,34 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { ETextAlignHorizontal, ETextAlignVertical, EUnit } from './text.schema';
+import { InputType } from '@nestjs/graphql';
+import { ETextAlignHorizontal, ETextAlignVertical, ETextUnit } from './text.schema';
 
 @InputType()
-export class CreateFontNameDTO {
-    @Field()
+export class TextValuePropDTO {
+    value?: number;
+    /**
+     * support PIXELS and PERCENT, line-height also can be AUTO
+     */
+    unit: ETextUnit;
+}
+
+@InputType()
+export class FontNameDTO {
+    /**
+     * font-family
+     */
     family: string;
 
-    @Field()
+    /**
+     * font-style
+     */
     style: string;
 }
 
 @InputType()
-export class CreateSpaceDTO {
-    @Field()
-    value: number;
-
-    @Field(() => EUnit)
-    unit: EUnit;
-}
-
-@InputType()
 export class CreateTextDTO {
-    @Field(() => ETextAlignHorizontal)
-    textAlignHorizontal: ETextAlignHorizontal;
-
-    @Field(() => ETextAlignVertical)
-    textAlignVertical: ETextAlignVertical;
-
-    @Field()
     fontSize: number;
-
-    @Field(() => CreateFontNameDTO)
-    fontName: CreateFontNameDTO;
-
-    @Field(() => CreateSpaceDTO)
-    letterSpacing: CreateSpaceDTO;
-
-    @Field(() => CreateSpaceDTO)
-    lineHeight: CreateSpaceDTO;
+    fontName?: FontNameDTO;
+    textAlignHorizontal?: ETextAlignHorizontal;
+    textAlignVertical?: ETextAlignVertical;
+    letterSpacing?: TextValuePropDTO;
+    lineHeight?:  TextValuePropDTO;
 }

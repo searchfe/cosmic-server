@@ -1,7 +1,7 @@
-import { Vector } from './../common/scalar/vector.scalar';
 import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
+import { Vector } from './../common/scalar/vector.scalar';
 
 export enum EShadowType {
     INSET = 'inset',
@@ -17,25 +17,29 @@ export class Shadow extends Document {
     @Prop()
     id: string;
 
-    @Field(() => EShadowType, { nullable: true })
-    @Prop()
+    /**
+     * inset or outset shadow
+     */
     type?: EShadowType;
 
-    @Field(() => Vector)
-    @Prop(() => Vector)
+    /**
+     * position
+     */
     offset: Vector;
 
-    @Field({ description: '阴影尺寸', nullable: true })
-    @Prop()
+    /**
+     * shadow size
+     */
     spread?: number;
 
-    @Field({ description: '模糊距离，blur radius' })
-    @Prop()
+    /**
+     * blur radius
+     */
     blur: number;
 
-    @Field(() => ID, { description: 'TODO: 支持原始值和引用两种形式' })
+    @Field(() => ID, { description: 'TODO: 支持原始值和引用两种形式', nullable: true })
     @Prop({ auto: false })
-    color: Types.ObjectId;
+    color?: Types.ObjectId;
 }
 
 export const ShadowSchema = SchemaFactory.createForClass(Shadow);

@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 export enum EConstaintType {
@@ -16,15 +16,8 @@ registerEnumType(EConstaintType, { name: 'EConstaintType' });
 @ObjectType()
 export class Constraint extends Document {
     @Field(() => ID)
-    @Prop()
     id: string;
-
-    @Field(() => EConstaintType)
-    @Prop(() => EConstaintType)
     horizontal: EConstaintType
-
-    @Field(() => EConstaintType)
-    @Prop(() => EConstaintType)
     vertical: EConstaintType
 }
 

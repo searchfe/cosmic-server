@@ -10,6 +10,6 @@ import { MongooseModule } from '@nestjs/mongoose';
             { name: Stroke.name, schema: StrokeSchema }
         ]),
     ],
-    providers: [StrokeService, StrokeResolver]
+    providers: [StrokeService, StrokeResolver, StrokeService]
 })
 export class StrokeModule { }
