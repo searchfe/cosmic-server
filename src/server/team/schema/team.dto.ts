@@ -2,15 +2,13 @@ import { Field, InputType } from '@nestjs/graphql';
 
 export enum PermissionEnum {
     NORMAL = 'normal',
+    OWNER = 'owner',
 }
 
 @InputType()
 export class CreateTeamDTO {
     @Field()
     name: string;
-
-    @Field()
-    owner: string;
 }
 
 @InputType()

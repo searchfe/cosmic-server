@@ -22,14 +22,19 @@ export class TeamResolver {
         return await this.teamService.findOne(id);
     }
 
+    @Query(() => [Team], { name: 'teams' })
+    async getAllTeams() {
+        return await this.teamService.findAll();
+    }
+
     @Mutation(() => Team)
     async createTeam(@Args('team') teamInput: CreateTeamDTO): Promise<Team> {
         // user validation logit belongs to access control, move it in future
-        const owner = await this.userService.findOne(teamInput.owner);
-        if (!owner) {
-            throw new UserInputError('user not found');
-        }
-        const newTeam = { name: teamInput.name, owner: owner.id, members: [] };
+        // const owner = await this.userService.findOne(teamInput.owner);
+        // if (!owner) {
+        //     throw new UserInputError('user not found');
+        // }
+        const newTeam = { name: teamInput.name, members: [] };
         return await this.teamService.create(newTeam);
     }
 
@@ -40,7 +45,7 @@ export class TeamResolver {
             throw new UserInputError('team not found');
         }
         const result = await this.teamService.update({
-            id: targetTeam._id,
+            id: targetTeam.id,
             name: teamInput.name,
         });
         if (result) {

@@ -19,10 +19,12 @@ export class TeamService {
         return await this.teamModel.findById(teamId).select(fields).lean().exec();
     }
 
-    async create(team: Pick<Team, 'name' | 'members'> & { owner: string }) {
-        const createTeam = { ...team, owner: Types.ObjectId(team.owner) };
-        const result = await this.teamModel.create(createTeam);
-        return result;
+    async create(team: Pick<Team, 'name' | 'members'>) {
+        return await this.teamModel.create(team);
+    }
+
+    async findAll() {
+        return await this.teamModel.find().lean(false).exec();
     }
 
     async update(team: Pick<Team, 'name' | 'id'>) {
@@ -41,12 +43,4 @@ export class TeamService {
         }
         return false;
     }
-
-    // async findAll(userId: string) {
-    //     return await this.permissionService.findAllTeam(userId);
-    // }
-
-    // async findAllMember(teamId: string) {
-    //     return await this.permissionService.findAllMember(teamId);
-    // }
 }
