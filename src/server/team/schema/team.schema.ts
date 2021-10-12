@@ -14,10 +14,6 @@ export class Team extends Document {
     @Prop({ maxlength: 32, required: true })
     name: string;
 
-    @Field(() => ID)
-    @Prop({ auto: false, required: true })
-    owner: Types.ObjectId;
-
     @Field(() => [TeamMemer])
     @Prop()
     members: TeamMemer[];

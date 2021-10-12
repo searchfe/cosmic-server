@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { MongoProjection } from '@server/common/types';
 import { isSuccessfulQuery } from '@server/common/util/db';
-import { Model, Types } from 'mongoose';
+import { Model, Types, FilterQuery } from 'mongoose';
 import { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
 
 @Injectable()
@@ -14,15 +14,28 @@ export class ProjectService {
     ) {}
 
     async create(project: CreateProjectDTO) {
-        const newProject = new this.projectModel(project);
-        return await newProject.save();
+        return await new this.projectModel({
+            ...project,
+            team: Types.ObjectId(project.team)
+        }).save();
     }
 
     async findOne(projectId: string, fields?: MongoProjection) {
         if (!fields) {
-            return await this.projectModel.findById(projectId).lean().exec();
+            return await this.projectModel.findById(projectId).lean(false).exec();
         }
-        return await this.projectModel.findById(projectId).select(fields).lean().exec();
+        return await this.projectModel.findById(projectId).select(fields).lean(false).exec();
+    }
+
+    async findAll(project: Partial<CreateProjectDTO> = {}) {
+        const query: FilterQuery<Project> = project;
+        if (project.team) {
+            query.team = Types.ObjectId(project.team);
+        }
+        if (project.parent) {
+            query.parent = Types.ObjectId(project.parent);
+        }
+        return await this.projectModel.find(query).lean(false).exec();
     }
 
     async update(project: UpdateProjectDTO) {
