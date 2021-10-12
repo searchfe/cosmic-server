@@ -1,10 +1,5 @@
 import { InputType, Field, ID, PickType } from '@nestjs/graphql';
 
-export enum TypeEnum {
-    MOBILE = 'mobile',
-    PC = 'pc'
-}
-
 @InputType()
 export class CreateProjectDTO {
     @Field()
@@ -13,12 +8,27 @@ export class CreateProjectDTO {
     @Field(() => ID)
     team: string;
 
-    @Field(() => String, { description: 'enum: pc or mobile' })
-    type: TypeEnum;
+    @Field(() => ID, { nullable: true })
+    parent?: string;
 }
 
 @InputType()
-export class UpdateProjectDTO extends PickType(CreateProjectDTO, ['name', 'type'] as const) {
+export class QueryProjectDTO {
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field({ nullable: true })
+    name?: string;
+
+    @Field(() => ID, { nullable: true })
+    team?: string;
+
+    @Field(() => ID, { nullable: true })
+    parent?: string;
+}
+
+@InputType()
+export class UpdateProjectDTO extends PickType(CreateProjectDTO, ['name'] as const) {
     @Field(() => ID)
     id: string;
 }

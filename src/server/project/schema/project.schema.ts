@@ -1,13 +1,12 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { TypeEnum } from './project.dto';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Project extends Document {
     @Field(() => ID)
-    id: string;
+    id: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
@@ -17,13 +16,9 @@ export class Project extends Document {
     @Prop({ maxlength: 32, required: true })
     name: string;
 
-    @Field(() => String)
-    @Prop({ required: true })
-    type: TypeEnum;
-
-    @Field(() => String, { nullable: true })
-    @Prop()
-    file?: string;
+    @Field(() => ID, { nullable: true })
+    @Prop({ auto: false })
+    parent?: Types.ObjectId;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
