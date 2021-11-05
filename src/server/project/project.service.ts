@@ -16,7 +16,8 @@ export class ProjectService {
     async create(project: CreateProjectDTO) {
         return await new this.projectModel({
             ...project,
-            team: Types.ObjectId(project.team)
+            team: Types.ObjectId(project.team),
+            parent: Types.ObjectId(project.parent),
         }).save();
     }
 
