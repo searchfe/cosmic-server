@@ -18,7 +18,7 @@ export class ConstraintResolver {
     }
 
     @Mutation(() => Constraint)
-    async createColor(@Args('constraint') color: CreateConstraintDTO) {
-        return await this.constraintService.create(color);
+    async createConstraint(@Args('constraint') constriant: CreateConstraintDTO) {
+        return await this.constraintService.create(constriant);
     }
 }

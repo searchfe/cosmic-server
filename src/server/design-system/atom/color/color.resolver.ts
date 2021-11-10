@@ -1,7 +1,7 @@
 import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { ColorService } from './color.service';
-import { CreateColorDTO } from './color.dto';
+import { CreateColorDTO, QueryColorDTO } from './color.dto';
 import { Color } from './color.schema';
 
 @Resolver(Color)
@@ -18,6 +18,11 @@ export class ColorResolver {
             ...result,
             id: result._id
         };
+    }
+
+    @Query(() => [Color], { name: 'colors' })
+    async getAllColors(@Args({ name: 'color', nullable: true }) color?: QueryColorDTO) {
+        return await this.colorService.findAll(color);
     }
 
     @Mutation(() => Color)

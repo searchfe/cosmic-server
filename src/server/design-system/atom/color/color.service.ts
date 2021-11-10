@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { CreateColorDTO } from './color.dto';
+import { Model, Types, FilterQuery } from 'mongoose';
+import { CreateColorDTO, QueryColorDTO } from './color.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Color } from './color.schema';
 import { MongoProjection } from '@server/common/types';
@@ -21,6 +21,17 @@ export class ColorService {
     }
 
     async create(color: CreateColorDTO) {
-        return new this.colorModel(color);
+        return await new this.colorModel({
+            ...color,
+            team: Types.ObjectId(color.team),
+        }).save();
+    }
+
+    async findAll(color: Partial<QueryColorDTO> = {}) {
+        const query: FilterQuery<Color> = color;
+        if (color.team) {
+            query.team = Types.ObjectId(color.team);
+        }
+        return await this.colorModel.find(query).lean(false).exec();
     }
 }
