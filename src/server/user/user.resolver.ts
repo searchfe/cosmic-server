@@ -14,7 +14,7 @@ export class UserResolver {
 
     @Query(() => User, { name: 'user' })
     async getUser(@Args({ name: 'id', type: () => String }) id: string) {
-        return await this.userService.findOne(id);
+        return await this.userService.findOne({ id });
     }
 
     @Mutation(() => User)
@@ -24,7 +24,7 @@ export class UserResolver {
 
     @Mutation(() => Boolean)
     async updateUser(@Args('user') userInput: UpdateUserDTO) {
-        const targetUser = await this.userService.findOne(userInput.id);
+        const targetUser = await this.userService.findOne({ id: userInput.id });
         if (!targetUser) {
             throw new UserInputError('user not found');
         }

@@ -26,3 +26,9 @@ export class UpdateUserDTO extends PickType(CreateUserDTO, ['name', 'intro', 'av
     @Field()
     id: string;
 }
+
+@InputType()
+export class QueryUserDTO extends CreateUserDTO {
+    @Field()
+    id: string;
+}

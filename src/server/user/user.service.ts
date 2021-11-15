@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './schema/user.schema';
+import { QueryUserDTO } from './schema/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -26,7 +27,7 @@ export class UserService {
         return false;
     }
 
-    async findOne(id: string) {
-        return await this.userModel.findById(id).exec();
+    async findOne(user: Partial<QueryUserDTO>) {
+        return await this.userModel.findOne(user).select({ password: 0 }).exec();
     }
 }

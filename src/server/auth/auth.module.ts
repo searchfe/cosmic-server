@@ -1,8 +1,8 @@
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './stragety/jwt.strategy';
 import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
+import { LocalStrategy } from './stragety/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from '../../config.service';

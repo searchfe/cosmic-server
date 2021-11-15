@@ -10,7 +10,7 @@ export class User extends Document{
     id: string;
 
     @Field(() => String)
-    @Prop({ maxlength: 64, required: true })
+    @Prop({ maxlength: 64, required: true, unique: true })
     email: string
 
     @Field(() => String)
