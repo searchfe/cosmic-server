@@ -59,7 +59,7 @@ export class TeamResolver {
         @Args('teamId') teamId: string,
         @Args({ name: 'member', type: () => AddTeamMemberDTO }) member: AddTeamMemberDTO
     ) {
-        const user = await this.userService.findOne(member.user);
+        const user = await this.userService.findOne({ id: member.user });
         if (!user) {
             throw new UserInputError('user not found');
         }
