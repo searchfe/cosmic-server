@@ -1,15 +1,23 @@
-import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER, Controller, Get, Inject, Post, Request, UseGuards } from '@nestjs/common';
+import { AuthService } from '@server/auth/auth.service';
 import { LocalAuthGuard } from '@server/auth/guard/local-auth.guard';
-import { AuthService } from "@server/auth/auth.service";
 
 @Controller()
 export class AppController {
-    constructor(private authService: AuthService) {}
+    constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private authService: AuthService
+    ) {}
 
     @UseGuards(LocalAuthGuard)
     @Post('auth/login')
     async login(@Request() req) {
-        return this.authService.login(req.user);
+        const result = await this.authService.login(req.user);
+        if (result && result.accessToken) {
+            this.cacheManager.set(`user-Bearer ${result.accessToken}`, req.user);
+        }
+        return result;
     }
 
     @UseGuards(LocalAuthGuard)

@@ -11,6 +11,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     constructor(private reflector: Reflector) {
         super();
     }
+
     canActivate(context: ExecutionContext) {
         const resolvers = this.reflector.getAll(RESOLVER_TYPE_METADATA, [
             context.getClass(),
@@ -26,8 +27,8 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
     }
 
     getRequest(context: ExecutionContext) {
-        const ctx = GqlExecutionContext.create(context);
-        return ctx.getContext().req;
+        const ctx = GqlExecutionContext.create(context).getContext();
+        return ctx.req;
     }
 
     handleRequest(err, user, info) {
