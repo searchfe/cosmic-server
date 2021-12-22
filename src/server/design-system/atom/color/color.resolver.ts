@@ -1,8 +1,11 @@
-import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
+import { Resolver, Args, Query, Mutation, Subscription } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { ColorService } from './color.service';
 import { CreateColorDTO, QueryColorDTO } from './color.dto';
 import { Color } from './color.schema';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubsub = new PubSub();
 
 @Resolver(Color)
 export class ColorResolver {
@@ -20,13 +23,19 @@ export class ColorResolver {
         };
     }
 
-    @Query(() => [Color], { name: 'colors' })
+    @Subscription(() => [Color], { name: 'colors', filter: (payload, variables) => {
+        return true;
+    } })
     async getAllColors(@Args({ name: 'color', nullable: true }) color?: QueryColorDTO) {
-        return await this.colorService.findAll(color);
+        const s  = pubsub.asyncIterator('colors');
+        return s;
+        // return await this.colorService.findAll(color);
     }
 
     @Mutation(() => Color)
     async createColor(@Args('color') color: CreateColorDTO) {
-        return await this.colorService.create(color);
+        const newColor = await this.colorService.create(color);
+        pubsub.publish('colors', { colors: [newColor] });
+        return newColor;
     }
 }

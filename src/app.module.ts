@@ -1,34 +1,30 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
+// import * as redisStore from 'cache-manager-redis-store';
+
+import { CacheModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from '@server/auth/auth.module';
 import { ProjectionModule } from '@server/project/project.module';
 import { SpecificationModule } from '@server/specification/specification.module';
+import { AppController } from './app.controller';
+import { ConfigModule } from './config.module';
 import { config, ConfigService } from './config.service';
+import { DesignSystemModule } from './server/design-system/design-system.module';
+import { GQLModule } from './server/gql/gql.module';
 import { TeamModule } from './server/team/team.module';
 import { UserModule } from './server/user/user.module';
-import { join } from 'path';
-import { DesignSystemModule } from './server/design-system/design-system.module';
-import { AppController } from './app.controller';
-import { AuthModule } from '@server/auth/auth.module';
-import { ConfigModule } from './config.module';
-import { APP_GUARD } from '@nestjs/core';
-import { GqlAuthGuard } from '@server/auth/guard/gql-auth.guard';
 
 @Module({
     imports: [
+        CacheModule.register({
+            // store: redisStore,
+            // host: 'localhost',
+            // port: 6379,
+            isGlobal: true,
+        }),
         MongooseModule.forRoot(
             `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`,
         ),
-        GraphQLModule.forRoot({
-            installSubscriptionHandlers: true,
-            autoSchemaFile: `${__dirname}/schema.gql`,
-            path: '/api/graphql',
-            context: ({ req }) => ({ req }),
-            definitions: {
-                path: join(process.cwd(), 'dist/graphql.d.ts'),
-            },
-            plugins: []
-        }),
+        GQLModule,
         UserModule,
         ConfigModule,
         AuthModule,
@@ -38,10 +34,6 @@ import { GqlAuthGuard } from '@server/auth/guard/gql-auth.guard';
         DesignSystemModule,
     ],
     controllers: [AppController],
-    providers: [{
-        provide: APP_GUARD,
-        useClass: GqlAuthGuard
-    }],
 })
 export class AppModule {
     constructor(private config: ConfigService) {}
