@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { MongoProjection } from '@server/common/types';
 import { isSuccessfulQuery } from '@server/common/util/db';
 import { Model, Types } from 'mongoose';
-import { Category, Specification } from './schema/specification.schema';
+import { Specification } from './schema/specification.schema';
+
+import type { Category } from './schema/specification.schema';
+
 
 type PartialSpecification = Partial<Specification>;
 
@@ -14,7 +17,7 @@ export class SpecificationService {
         private readonly specificationModel: Model<Specification>
     ) {}
 
-    async findOne(specificationId: string, fields?: MongoProjection) {
+    async findOne(specificationId: string, fields?: MongoProjection<Specification>) {
         if (!fields) {
             return await this.specificationModel.findById(specificationId).exec();
         }
@@ -30,7 +33,7 @@ export class SpecificationService {
         });
     }
 
-    async getCategory(specificationId: string, categoryCondition: { [key in keyof Category]?: unknown }, fields?: MongoProjection) {
+    async getCategory(specificationId: string, categoryCondition: { [key in keyof Category]?: unknown }, fields?: MongoProjection<Specification>) {
         const projection: Record<string, unknown> = fields ? { ...fields } : {};
         const elemMatch = { ...categoryCondition };
         if (categoryCondition.id) {
@@ -49,7 +52,7 @@ export class SpecificationService {
         return await newSpecification.save();
     }
 
-    async update(specification: PartialSpecification, fields?: MongoProjection) {
+    async update(specification: PartialSpecification, fields?: MongoProjection<Specification>) {
         const result = this.specificationModel.findByIdAndUpdate(specification.id, specification, { new: true });
         if (!fields) {
             return result.lean().exec();

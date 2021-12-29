@@ -1,9 +1,11 @@
-import { PermissionEnum } from './schema/team.dto';
 import { Injectable } from '@nestjs/common';
 import { Team } from './schema/team.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { MongoProjection } from '@server/common/types';
+
+import type { PermissionEnum } from './schema/team.dto';
+import type { MongoProjection } from '@server/common/types';
+
 
 @Injectable()
 export class TeamService {
@@ -12,7 +14,7 @@ export class TeamService {
         private readonly teamModel: Model<Team>
     ) {}
 
-    async findOne(teamId: string, fields?: MongoProjection) {
+    async findOne(teamId: string, fields?: MongoProjection<Team>) {
         if (!fields) {
             return await this.teamModel.findById(teamId).exec();
         }

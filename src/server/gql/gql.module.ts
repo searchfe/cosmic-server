@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { GqlAuthGuard } from '@server/auth/guard/gql-auth.guard';
 import { GQLConfigService } from './gql.service';
 
+
 @Module({
     imports: [
         GraphQLModule.forRootAsync({
