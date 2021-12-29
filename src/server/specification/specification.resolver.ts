@@ -1,11 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { fileds2MongoQuery } from '@server/common/util/db';
+import { fileds2MongoProjection } from '@server/common/util/db';
 import { TeamService } from '@server/team/team.service';
 import { UserInputError } from 'apollo-server-core';
 import { CreateCategoryDTO, CreateSpecificationDTO, UpdateCategoryDTO, UpdateSpecificationDTO } from './schema/specification.dto';
 import { Category, Specification } from './schema/specification.schema';
 import { SpecificationService } from './specification.service';
+
 
 @Resolver(() => Specification)
 export class SpecificationResolver {
@@ -21,7 +22,7 @@ export class SpecificationResolver {
         @Args({ name: 'id' }) id: string,
         @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>
     ) {
-        const projection = fields ? fileds2MongoQuery(fields) : undefined;
+        const projection = fields ? fileds2MongoProjection(fields) : undefined;
         return await this.specificationService.findOne(id, projection);
     }
 
@@ -36,7 +37,7 @@ export class SpecificationResolver {
         @Args({ name: 'categoryId', type: () => String }) categoryId: string,
         @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>,
     ) {
-        const projection = fields && fields.length > 0 ? fileds2MongoQuery(fields || []) : undefined;
+        const projection = fields && fields.length > 0 ? fileds2MongoProjection(fields || []) : undefined;
         const result = await this.specificationService.getCategory(specificationId, {  name: '字体' }, projection);
         return result;
     }
@@ -61,7 +62,7 @@ export class SpecificationResolver {
         @Args({ name: 'fields', type: () => [String], description: "fields to return ", defaultValue: ['id', 'name'] })
         fields: string[]
     ) {
-        const projection = fileds2MongoQuery(fields);
+        const projection = fileds2MongoProjection(fields);
         const result = await this.specificationService.update(specification, projection);
         return {
             ...result,

@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { fileds2MongoQuery } from '@server/common/util/db';
+import { fileds2MongoProjection } from '@server/common/util/db';
 import { UserInputError } from 'apollo-server-core';
 import { GraphQLError } from 'graphql';
 import { LevelService } from './level.service';
@@ -22,7 +22,7 @@ export class LevelResolver {
         @Args({ name: 'id' }) id: string,
         @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>
     ) {
-        const projection = fields ? fileds2MongoQuery(fields) : undefined;
+        const projection = fields ? fileds2MongoProjection(fields) : undefined;
         const level = await this.levelService.findOne(id, projection);
         const result = {
             id: level._id,

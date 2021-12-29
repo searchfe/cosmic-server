@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { MongoProjection } from '@server/common/types';
 import { Model, Types } from 'mongoose';
-import { CreateItemDTO, CreateLevelDTO } from './schema/level.dto';
 import { Level } from './schema/level.schema';
+
+import type { MongoProjection } from '@server/common/types';
+import type { CreateItemDTO, CreateLevelDTO } from './schema/level.dto';
+
 
 @Injectable()
 export class LevelService {
@@ -12,7 +14,7 @@ export class LevelService {
         private readonly levelModel: Model<Level>
     ) {}
 
-    async findOne(levelId: string, fields?: MongoProjection) {
+    async findOne(levelId: string, fields?: MongoProjection<Level>) {
         if (!fields) {
             return await this.levelModel.findById(levelId).lean().exec();
         }

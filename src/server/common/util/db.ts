@@ -1,7 +1,11 @@
-import { MongoProjection } from '../types';
+import type { MongoProjection } from '../types';
 
-export function fileds2MongoQuery(includes: Array<string>, excludes: Array<string> = []) {
-    const result: MongoProjection = {};
+
+export function fileds2MongoProjection<T>(
+    includes: Array<keyof T>,
+    excludes: Array<keyof T> = []
+) {
+    const result: Partial<MongoProjection<T>> = {};
     includes.forEach(field => {
         result[field] = 1;
     });

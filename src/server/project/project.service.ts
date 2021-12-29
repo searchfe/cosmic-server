@@ -21,7 +21,7 @@ export class ProjectService {
         }).save();
     }
 
-    async findOne(projectId: string, fields?: MongoProjection) {
+    async findOne(projectId: string, fields?: MongoProjection<Project>) {
         if (!fields) {
             return await this.projectModel.findById(projectId).lean(false).exec();
         }
