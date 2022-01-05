@@ -15,7 +15,7 @@ export class AppController {
     async login(@Request() req) {
         const result = await this.authService.login(req.user);
         if (result && result.accessToken) {
-            this.cacheManager.set(`user-Bearer ${result.accessToken}`, req.user);
+            this.cacheManager.set(`user-Bearer ${result.accessToken}`, req.user, { ttl: 24 * 60 * 60 });
         }
         return result;
     }
