@@ -1,33 +1,40 @@
-import { Query, Mutation, Args, Resolver } from '@nestjs/graphql';
+import { Query, Mutation, Args, Resolver, Subscription } from '@nestjs/graphql';
 import { capitalize } from 'lodash';
 import { Inject } from '@nestjs/common';
+import { PubSub } from 'graphql-subscriptions';
+
 import type { BaseSchema } from './base.schema';
 import type { IBaseDataService } from './base.service';
-import type { Class } from 'utility-types';
-import { DeepPartial } from 'utility-types';
+import type { Class, DeepPartial } from 'utility-types';
 
+
+const pubsub = new PubSub();
 
 export interface IBaseResolver<TSchema extends BaseSchema> {
     create: (createInput: DeepPartial<TSchema>) => Promise<Class<TSchema>>;
     update: (updateInput: DeepPartial<TSchema>) => Promise<boolean>;
     delete: (id: string) => Promise<boolean>;
-    findAll: (query?: DeepPartial<TSchema>, fileds?: Array<keyof TSchema>) => Promise<Class<TSchema>[]>;
-    findOne: (id: string, fileds?: Array<keyof TSchema>) => Promise<Class<TSchema>>;
+    findAll: (query?: DeepPartial<TSchema>, fields?: Array<keyof TSchema>) => Promise<Class<TSchema>[]>;
+    findOne: (id: string, fields?: Array<keyof TSchema>) => Promise<Class<TSchema>>;
 }
 
 export function BaseResolver<
     TSchema extends BaseSchema,
     TService extends IBaseDataService<TSchema>,
+    TQueryInput extends DeepPartial<TSchema>,
     TCreateInput extends DeepPartial<TSchema>,
     TUpdateInput extends DeepPartial<TSchema>,
 >(
     schema: Class<TSchema>,
     service: Class<TService>,
+    queryInput: Class<TQueryInput>,
     createInput: Class<TCreateInput>,
     updateInput: Class<TUpdateInput>
 ): Class<IBaseResolver<TSchema>> {
         const lowerCaseName = schema.name.toLocaleLowerCase();
         const capitalizeName = capitalize(schema.name);
+        const createTrigger = `on${capitalizeName}Create`;
+
         @Resolver({ isAbstract: true })
         class BaseResolver implements IBaseResolver<TSchema> {
             @Inject(service)
@@ -35,15 +42,17 @@ export function BaseResolver<
 
             @Mutation(() => schema, { name: `create${capitalizeName}` })
             async create(
-                @Args({ type: () => createInput, name: lowerCaseName })
+                @Args({ type: () => createInput, name: 'data' })
                 data: TCreateInput
             ): Promise<Class<TSchema>> {
-                return await this.dataService.create(data);
+                const result = await this.dataService.create(data);
+                pubsub.publish(createTrigger, { [createTrigger]: result });
+                return result;
             }
 
             @Mutation(() => schema, { name: `update${capitalizeName}`, })
             async update(
-              @Args({ type: () => updateInput, name: lowerCaseName })
+              @Args({ type: () => updateInput, name: 'data' })
               data: TUpdateInput,
             ) {
               return await this.dataService.update(data);
@@ -58,21 +67,27 @@ export function BaseResolver<
             async findOne(
                 @Args('id', { type: () => String })
                 id: string,
-                @Args({ type: () => [String], name: 'fileds', nullable: true })
-                fileds?: Array<keyof TSchema>
+                @Args({ type: () => [String], name: 'fields', nullable: true })
+                fields?: Array<keyof TSchema>
             ) {
-              return await this.dataService.findOne(id, fileds);
+              return await this.dataService.findOne(id, fields);
             }
 
             @Query(() => [schema], { name: `${lowerCaseName}s` })
             async findAll(
-                @Args({ type: () => createInput, name: 'query', nullable: true })
-                query?: DeepPartial<TSchema>,
-                @Args({ type: () => [String], name: 'fileds', nullable: true })
-                fileds?: Array<keyof TSchema>
+                @Args({ type: () => queryInput, name: 'query', nullable: true })
+                query?: TCreateInput,
+                @Args({ type: () => [String], name: 'fields', nullable: true })
+                fields?: Array<keyof TSchema>
             ) {
-                return await this.dataService.findAll(query, fileds);
+                return await this.dataService.findAll(query, fields);
             }
+
+            @Subscription(() => schema, { name: createTrigger })
+            async onCreate() {
+                return pubsub.asyncIterator(createTrigger);
+            }
+
         }
         return BaseResolver;
     }

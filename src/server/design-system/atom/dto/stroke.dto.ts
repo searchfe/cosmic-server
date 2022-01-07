@@ -1,4 +1,4 @@
-import { InputType } from "@nestjs/graphql";
+import { InputType, Field, ID } from "@nestjs/graphql";
 
 
 @InputType()
@@ -9,4 +9,13 @@ export class CreatStrokeDTO {
      */
     paint: string[];
     weight: number;
+}
+
+@InputType()
+export class QueryStrokeDTO {
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field(() => ID, { nullable: true })
+    team?: string;
 }

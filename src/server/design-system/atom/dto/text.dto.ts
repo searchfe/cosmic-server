@@ -1,6 +1,6 @@
 import type { ETextAlignHorizontal, ETextAlignVertical, ETextUnit } from '../schema/text.schema';
 
-import { InputType } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 
 
 @InputType()
@@ -33,4 +33,13 @@ export class CreateTextDTO {
     textAlignVertical?: ETextAlignVertical;
     letterSpacing?: TextValuePropDTO;
     lineHeight?:  TextValuePropDTO;
+}
+
+@InputType()
+export class QueryTextDTO {
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field(() => ID, { nullable: true })
+    team?: string;
 }
