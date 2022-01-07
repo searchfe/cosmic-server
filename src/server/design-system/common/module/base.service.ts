@@ -36,11 +36,11 @@ export function BaseDataService<TSchema extends BaseSchema>(schema: Class<TSchem
             return isSuccessfulQuery(result);
         }
 
-        async findOne(id: string, fields?: Array<keyof TSchema>): Promise<Class<TSchema>> {
+        async findOne(id: string, fields: Array<keyof TSchema> = []): Promise<Class<TSchema>> {
             return await this.model.findById(id).select(fileds2MongoProjection(fields)).exec();
         }
 
-        async findAll(query?: Record<string, unknown>, fields?: Array<keyof TSchema>): Promise<Class<TSchema>[]> {
+        async findAll(query?: Record<string, unknown>, fields: Array<keyof TSchema> = []): Promise<Class<TSchema>[]> {
             // if (color.team) {
             //     query.team = Types.ObjectId(color.team);
             // }

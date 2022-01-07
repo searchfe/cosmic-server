@@ -1,4 +1,4 @@
-import { InputType } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 
 import type { EConstaintType } from '../schema/constraint.schema';
 
@@ -13,4 +13,13 @@ export class CreateConstraintDTO {
      * horizontal constraint
      */
     horizontal: EConstaintType;
+}
+
+@InputType()
+export class QueryConstraintDTO {
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field(() => ID, { nullable: true })
+    team?: string;
 }

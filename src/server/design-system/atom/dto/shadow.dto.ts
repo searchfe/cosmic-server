@@ -1,4 +1,4 @@
-import { InputType } from "@nestjs/graphql";
+import { InputType, Field, ID } from "@nestjs/graphql";
 import type { EShadowType } from '../schema/shadow.schema';
 
 
@@ -23,4 +23,13 @@ export class CreateShadowDTO {
      * blur radius
      */
     blur: number;
+}
+
+@InputType()
+export class QueryShadowDTO {
+    @Field({ nullable: true })
+    id?: string;
+
+    @Field(() => ID, { nullable: true })
+    team?: string;
 }
