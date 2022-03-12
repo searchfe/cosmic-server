@@ -22,7 +22,7 @@ import { UserModule } from './server/user/user.module';
             isGlobal: true,
         }),
         MongooseModule.forRoot(
-            `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`,
+            config.DB_URI ?? `mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`,
         ),
         GQLModule,
         UserModule,

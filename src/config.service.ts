@@ -31,7 +31,7 @@ export class ConfigService {
           // }
         });
     }
-  
+
     // get(key: string): string {
     //   return this.envConfig[key];
     // }
@@ -55,6 +55,7 @@ export class ConfigService {
     get DB_USERNAME() {return this.envConfig.DB_USERNAME;}
     get DB_PASSWORD() {return this.envConfig.DB_PASSWORD;}
     get DB_DATABASE() {return this.envConfig.DB_DATABASE;}
+    get DB_URI() {return this.envConfig.DB_URI;}
 
     get JWT_SECRET() {return this.envConfig.JWT_SECRET}
     get JWT_SIGN_EXPIRES() {return this.envConfig.JWT_SIGN_EXPIRES}
@@ -90,12 +91,13 @@ export class ConfigService {
             DB_USERNAME: Joi.string().allow('').allow(null),
             DB_PASSWORD: Joi.string().allow('').allow(null),
             DB_DATABASE: Joi.string().required(),
+            DB_URI: Joi.string().allow('').allow(null),
             JWT_SIGN_EXPIRES: Joi.string().required(),
             JWT_SECRET: Joi.string().required()
           // PORT: Joi.number().default(3000),
           // API_AUTH_ENABLED: Joi.boolean().required(),
         });
-    
+
         const { error, value: validatedEnvConfig } = Joi.validate(
           envConfig,
           envVarsSchema,
