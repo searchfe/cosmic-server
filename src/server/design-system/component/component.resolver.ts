@@ -14,4 +14,9 @@ export class ComponentResolver {
     async getComponent(@Args({ name: 'id', type: () => String }) id: string) {
         return this.componentService.findOne({ id });
     }
+
+    @Query(() => [Component], { name: 'components' })
+    async getComponents() {
+        return this.componentService.findAll();
+    }
 }
