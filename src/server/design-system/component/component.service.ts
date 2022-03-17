@@ -14,4 +14,8 @@ export class ComponentService {
     async findOne(component: Partial<QueryComponentDTO>) {
         return await this.componentModel.findOne(component).exec();
     }
+
+    async findAll() {
+        return this.componentModel.find();
+    }
 }

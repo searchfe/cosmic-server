@@ -6,6 +6,7 @@ import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import type {
     GqlModuleOptions,
 } from '@nestjs/graphql';
+// @ts-expect-error
 import type { Context } from 'graphql-ws';
 @Injectable()
 export class GQLConfigService {
