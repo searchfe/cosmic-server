@@ -17,7 +17,7 @@ export class Project extends Document {
     name: string;
 
     @Field(() => ID, { nullable: true })
-    @Prop({ auto: false })
+    @Prop({ auto: false, required: false })
     parent?: Types.ObjectId;
 }
 
