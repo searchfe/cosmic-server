@@ -3,8 +3,9 @@ import { ProjectService } from './project.service';
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserInputError } from 'apollo-server-core';
-import { Project } from './schema/project.schema';
+import { Project, ProjectPlus } from './schema/project.schema';
 import { CreateProjectDTO, UpdateProjectDTO, QueryProjectDTO } from './schema/project.dto';
+
 
 @Resolver(() => Project)
 export class ProjectResolver {
@@ -25,6 +26,11 @@ export class ProjectResolver {
         return await this.projectService.findAll(project);
     }
 
+    @Query(() => [ProjectPlus], { name: 'projectStructure' })
+    async projectStructure(@Args({ name: 'id' }) id: string) {
+        return await this.projectService.projectStructure(id);
+    }
+
     @Mutation(() => Project)
     async createProject(@Args('project') project: CreateProjectDTO) {
         const team = await this.teamService.findOne(project.team);
@@ -43,4 +49,5 @@ export class ProjectResolver {
     async deleteProject(@Args('id') id: string) {
         return (await this.projectService.delete(id)).ok;
     }
+
 }

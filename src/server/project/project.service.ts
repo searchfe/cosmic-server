@@ -1,10 +1,14 @@
+import type { ProjectPlus } from './schema/project.schema';
 import { Project } from './schema/project.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { MongoProjection } from '@server/common/types';
 import { isSuccessfulQuery } from '@server/common/util/db';
-import { Model, Types, FilterQuery } from 'mongoose';
-import { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
+import { Model, Types } from 'mongoose';
+
+import type { FilterQuery,  LeanDocument } from 'mongoose';
+import type { MongoProjection } from '@server/common/types';
+import type { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
+
 
 @Injectable()
 export class ProjectService {
@@ -56,5 +60,30 @@ export class ProjectService {
 
     async delete(_id: string) {
         return await this.projectModel.remove({ _id });
+    }
+
+    async projectStructure(id: string) {
+        const projects = await this.projectModel.find({ parent: Types.ObjectId(id) }).lean(true).exec();
+        const children = await this.projectModel.find().in('parent', projects.map(p => p._id)).lean(true).exec();
+        let result: LeanDocument<ProjectPlus>[] = [];
+        if (children.length) {
+            const parentSet = new Set;
+            children.forEach(child => {
+                parentSet.add(child.parent.toString());
+            });
+            result = projects.map(p => {
+                const projectPlus = {
+                    ...p,
+                    id: p._id,
+                    hasChildren: false,
+                };
+
+                if (parentSet.has(p._id.toString())) {
+                    projectPlus.hasChildren = true;
+                }
+                return projectPlus;
+            });
+        }
+        return result;
     }
 }
