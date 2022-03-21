@@ -2,6 +2,7 @@ import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
+
 @ObjectType()
 @Schema({ timestamps: true })
 export class Project extends Document {
@@ -20,5 +21,11 @@ export class Project extends Document {
     @Prop({ auto: false, required: false })
     parent?: Types.ObjectId;
 }
+
+@ObjectType({ isAbstract: true })
+export class ProjectPlus extends Project {
+    public hasChildren: boolean;
+}
+
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);
