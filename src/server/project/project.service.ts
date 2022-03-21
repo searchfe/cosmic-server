@@ -22,10 +22,14 @@ export class ProjectService {
         if (!newProject.parent) {
             delete newProject.parent;
         }
-        return await new this.projectModel({
+        const newModel = new this.projectModel({
             ...newProject,
             team: Types.ObjectId(project.team),
-        }).save();
+        });
+        if (newProject.parent) {
+            newModel.parent = Types.ObjectId(newProject.parent);
+        }
+        return newModel.save();
     }
 
     async findOne(projectId: string, fields?: MongoProjection<Project>) {
@@ -66,6 +70,8 @@ export class ProjectService {
         const projects = await this.projectModel.find({ parent: Types.ObjectId(id) }).lean(true).exec();
         const children = await this.projectModel.find().in('parent', projects.map(p => p._id)).lean(true).exec();
         let result: LeanDocument<ProjectPlus>[] = [];
+        console.log(projects)
+        console.log(children)
         if (children.length) {
             const parentSet = new Set;
             children.forEach(child => {
