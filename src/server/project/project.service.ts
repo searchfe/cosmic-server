@@ -14,10 +14,13 @@ export class ProjectService {
     ) {}
 
     async create(project: CreateProjectDTO) {
+        const newProject = { ...project };
+        if (!newProject.parent) {
+            delete newProject.parent;
+        }
         return await new this.projectModel({
-            ...project,
+            ...newProject,
             team: Types.ObjectId(project.team),
-            parent: Types.ObjectId(project.parent),
         }).save();
     }
 
@@ -49,5 +52,9 @@ export class ProjectService {
             return true;
         }
         return false;
+    }
+
+    async delete(_id: string) {
+        return await this.projectModel.remove({ _id });
     }
 }

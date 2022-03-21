@@ -38,4 +38,9 @@ export class ProjectResolver {
     async updateProject( @Args('project') project: UpdateProjectDTO) {
         return await this.projectService.update(project);
     }
+
+    @Mutation(() => Boolean)
+    async deleteProject(@Args('id') id: string) {
+        return (await this.projectService.delete(id)).ok;
+    }
 }
