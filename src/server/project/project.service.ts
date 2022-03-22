@@ -22,10 +22,14 @@ export class ProjectService {
         if (!newProject.parent) {
             delete newProject.parent;
         }
-        return await new this.projectModel({
+        const newModel = new this.projectModel({
             ...newProject,
             team: Types.ObjectId(project.team),
-        }).save();
+        });
+        if (newProject.parent) {
+            newModel.parent = Types.ObjectId(newProject.parent);
+        }
+        return newModel.save();
     }
 
     async findOne(projectId: string, fields?: MongoProjection<Project>) {
