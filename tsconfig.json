@@ -15,7 +15,7 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "paths": {
-      "@server/*": ["src/server/*"] // 此处映射是相对于"baseUrl"
+      "@/*": ["src/*"]
     }
   },
   "exclude": ["node_modules"],
