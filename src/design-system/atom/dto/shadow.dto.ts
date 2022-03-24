@@ -1,35 +1,25 @@
 import { InputType, Field, ID } from "@nestjs/graphql";
-import type { EShadowType } from '../schema/shadow.schema';
+import { EShadowType } from '../schema/shadow.schema';
+import { CreateBaseDTO } from '../../common/module/base.dto';
 
 
 @InputType()
-export class CreateShadowDTO {
-    /**
-     * inset or outset shadow
-     */
+export class CreateShadowDTO extends CreateBaseDTO {
+    @Field()
     type?: EShadowType;
 
-    /**
-     * position
-     */
-    // offset: Vector;
+    @Field()
+    offsetX?: string;
 
-    /**
-     * shadow size
-     */
-    spread?: number;
+    @Field()
+    offsetY?: string;
 
-    /**
-     * blur radius
-     */
-    blur: number;
-}
+    @Field()
+    blur: string;
 
-@InputType()
-export class QueryShadowDTO {
-    @Field({ nullable: true })
-    id?: string;
+    @Field()
+    spread?: string;
 
-    @Field(() => ID, { nullable: true })
-    team?: string;
+    @Field(() => ID)
+    color?: string;
 }

@@ -3,14 +3,9 @@ import { CreateBaseDTO } from '../../common/module/base.dto';
 
 
 @InputType()
-export class CreateColorDTO extends CreateBaseDTO {
+export class CreateOpacityDTO extends CreateBaseDTO {
 
     @Field()
-    day: string;
+    opacity: number;
 
-    @Field()
-    night?: string;
-
-    @Field()
-    dark?: string;
 }

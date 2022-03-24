@@ -1,7 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
-import { Vector } from '../../common/scalar/vector.scalar';
 import { BaseSchema } from '../../common/module/base.schema';
 
 
@@ -15,27 +14,28 @@ registerEnumType(EShadowType, { name: 'EShadowType' });
 @Schema({ timestamps: true })
 @ObjectType()
 export class Shadow extends BaseSchema {
-    /**
-     * inset or outset shadow
-     */
+
+    @Field()
+    @Prop()
     type?: EShadowType;
 
-    /**
-     * position
-     */
-    // offset: Vector;
+    @Field()
+    @Prop()
+    offsetX?: string;
 
-    /**
-     * shadow size
-     */
-    spread?: number;
+    @Field()
+    @Prop()
+    offsetY?: string;
 
-    /**
-     * blur radius
-     */
-    blur: number;
+    @Field()
+    @Prop()
+    blur: string;
 
-    @Field(() => ID, { description: 'TODO: 支持原始值和引用两种形式', nullable: true })
+    @Field()
+    @Prop()
+    spread?: string;
+
+    @Field(() => ID, { nullable: true })
     @Prop({ auto: false })
     color?: Types.ObjectId;
 }
