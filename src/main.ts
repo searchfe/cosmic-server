@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { ConfigService } from './config.service';
-import { HttpExceptionFilter } from './server/common/filter/http-exception.filter';
+import { AppModule } from './app/app.module';
+import { ConfigService } from './config/config.service';
+import { HttpExceptionFilter } from './common/filter/http-exception.filter';
+import type { NestExpressApplication } from '@nestjs/platform-express';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -25,6 +26,6 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter);
 
-  await app.listen(config.PORT || 3000);
+  await app.listen(3001);
 }
 bootstrap();
