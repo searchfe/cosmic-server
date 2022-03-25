@@ -1,23 +1,26 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Color, ColorSchema } from './schema/color.schema';
-import { Text, TextSchema } from './schema/text.schema';
-import { Constraint, ConstaintSchema } from './schema/constraint.schema';
+import { Font, FontSchema } from './schema/font.schema';
 import { Shadow, ShadowSchema } from './schema/shadow.schema';
-import { Stroke, StrokeSchema } from './schema/stroke.schema';
+import { Border, BorderSchema } from './schema/border.schema';
+import { Corner, CornerSchema } from './schema/corner.schema';
+import { Opacity, OpacitySchema } from './schema/opacity.schema';
 import {
     ColorResolver,
-    TextResolver,
-    StrokeResolver,
-    ConstraintResolver,
-    ShadowResolver
+    FontResolver,
+    ShadowResolver,
+    BorderResolver,
+    CornerResolver,
+    OpacityResolver,
 } from './resolver/index';
 import {
     ColorService,
-    TextService,
-    StrokeService,
-    ConstaintService,
-    ShadowService
+    FontService,
+    ShadowService,
+    BorderService,
+    CornerService,
+    OpacityService,
 } from './service/index';
 
 
@@ -25,23 +28,26 @@ import {
     imports: [
         MongooseModule.forFeature([
             { name: Color.name, schema: ColorSchema },
-            { name: Text.name, schema: TextSchema },
-            { name: Constraint.name, schema: ConstaintSchema },
+            { name: Font.name, schema: FontSchema },
             { name: Shadow.name, schema: ShadowSchema },
-            { name: Stroke.name, schema: StrokeSchema },
+            { name: Border.name, schema: BorderSchema },
+            { name: Corner.name, schema: CornerSchema },
+            { name: Opacity.name, schema: OpacitySchema },
         ]),
     ],
     providers: [
         ColorService,
-        TextService,
-        StrokeService,
-        ConstaintService,
-        ShadowService,
         ColorResolver,
-        TextResolver,
-        StrokeResolver,
-        ConstraintResolver,
+        FontService,
+        FontResolver,
+        ShadowService,
         ShadowResolver,
+        BorderService,
+        BorderResolver,
+        CornerService,
+        CornerResolver,
+        OpacityService,
+        OpacityResolver,
     ]
 })
 export class AtomModule {}

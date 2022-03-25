@@ -1,57 +1,104 @@
 import { Resolver } from '@nestjs/graphql';
-import { Text } from '../schema/text.schema';
-import { Constraint } from '../schema/constraint.schema';
-import { Layout } from '../schema/layout.schema';
-import { Shadow } from '../schema/shadow.schema';
-import { Stroke } from '../schema/stroke.schema';
-import { Color } from '../schema/color.schema';
-import { Corner } from '../schema/corner.schema';
-import { CreateColorDTO, QueryColorDTO } from '../dto/color.dto';
-import { CreateTextDTO, QueryTextDTO } from '../dto/text.dto';
-import { CreateConstraintDTO, QueryConstraintDTO } from '../dto/constraint.dto';
-import { CreateShadowDTO, QueryShadowDTO } from '../dto/shadow.dto';
-import { CreatStrokeDTO, QueryStrokeDTO } from '../dto/stroke.dto';
 import { BaseResolver } from '../../common/module/base.resolver';
+import { QueryBaseDTO } from '../../common/module/base.dto';
+
+import { Color } from '../schema/color.schema';
+import { CreateColorDTO } from '../dto/color.dto';
+
+import { Opacity } from '../schema/opacity.schema';
+import { CreateOpacityDTO } from '../dto/opacity.dto';
+
+import { Font } from '../schema/font.schema';
+import { CreateFontDTO } from '../dto/font.dto';
+
+import { Shadow } from '../schema/shadow.schema';
+import { CreateShadowDTO } from '../dto/shadow.dto';
+
+import { Border } from '../schema/border.schema';
+import { CreatBorderDTO } from '../dto/border.dto';
+
+import { Corner } from '../schema/corner.schema';
+import { CreateCornerDTO } from '../dto/corner.dto';
+
+
 import {
     ColorService,
-    ConstaintService,
-    TextService,
-    LayoutService,
-    CornerService,
+    OpacityService,
+    FontService,
     ShadowService,
-    StrokeService
+    BorderService,
+    CornerService,
+    // LayoutService,
+    // CornerService,
 } from '../service/index';
 
 
 @Resolver(() => Color)
-export class ColorResolver extends BaseResolver<
-    Color, ColorService, QueryColorDTO, CreateColorDTO, CreateColorDTO
->(Color, ColorService, QueryColorDTO, CreateColorDTO, CreateColorDTO) {}
+export class ColorResolver extends BaseResolver({
+    schema: Color,
+    service: ColorService,
+    queryInput: QueryBaseDTO,
+    createInput: CreateColorDTO,
+    updateInput: CreateColorDTO,
+}) {}
 
-@Resolver(() => Text)
-export class TextResolver extends BaseResolver<
-    Text, TextService, QueryTextDTO, CreateTextDTO, CreateTextDTO
->(Text, TextService, QueryTextDTO, CreateTextDTO, CreateTextDTO) {}
+@Resolver(() => Opacity)
+export class OpacityResolver extends BaseResolver({
+    schema: Opacity,
+    service: OpacityService,
+    queryInput: QueryBaseDTO,
+    createInput: CreateOpacityDTO,
+    updateInput: CreateOpacityDTO,
+}) {}
 
-@Resolver(() => Constraint)
-export class ConstraintResolver extends BaseResolver<
-    Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO
->(Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO) {}
-
-// @Resolver(() => Layout)
-// export class LayoutResolver extends BaseResolver<
-//     Layout, LayoutService, CreateTextDTO, CreateTextDTO
-// >(Layout, LayoutService, CreateTextDTO, CreateTextDTO) {}
+@Resolver(() => Font)
+export class FontResolver extends BaseResolver({
+    schema: Font,
+    service: FontService,
+    queryInput: QueryBaseDTO,
+    createInput: CreateFontDTO,
+    updateInput: CreateFontDTO,
+}) {}
 
 @Resolver(() => Shadow)
-export class ShadowResolver extends BaseResolver<
-    Shadow, ShadowService, QueryShadowDTO, CreateShadowDTO, CreateShadowDTO
->(Shadow, ShadowService, QueryShadowDTO, CreateShadowDTO, CreateShadowDTO) {}
+export class ShadowResolver extends BaseResolver({
+    schema: Shadow,
+    service: ShadowService,
+    queryInput: QueryBaseDTO,
+    createInput: CreateShadowDTO,
+    updateInput: CreateShadowDTO,
+}) {}
 
-@Resolver(() => Stroke)
-export class StrokeResolver extends BaseResolver<
-    Stroke, StrokeService, QueryStrokeDTO, CreatStrokeDTO, CreatStrokeDTO
->(Stroke, StrokeService, QueryStrokeDTO, CreatStrokeDTO, CreatStrokeDTO) {}
+@Resolver(() => Border)
+export class BorderResolver extends BaseResolver({
+    schema: Border,
+    service: BorderService,
+    queryInput: QueryBaseDTO,
+    createInput: CreatBorderDTO,
+    updateInput: CreatBorderDTO,
+}) {}
+
+@Resolver(() => Corner)
+export class CornerResolver extends BaseResolver({
+    schema: Corner,
+    service: CornerService,
+    queryInput: QueryBaseDTO,
+    createInput: CreateCornerDTO,
+    updateInput: CreateCornerDTO,
+}) {}
+
+
+// @Resolver(() => Constraint)
+// export class ConstraintResolver extends BaseResolver<
+//     Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO
+// >(Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO) {}
+
+
+
+// @Resolver(() => Stroke)
+// export class StrokeResolver extends BaseResolver<
+//     Stroke, StrokeService, QueryStrokeDTO, CreatStrokeDTO, CreatStrokeDTO
+// >(Stroke, StrokeService, QueryStrokeDTO, CreatStrokeDTO, CreatStrokeDTO) {}
 
 // @Resolver(() => Corner)
 // export class CornerResolver extends BaseResolver<

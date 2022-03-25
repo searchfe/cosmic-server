@@ -25,12 +25,15 @@ export function BaseResolver<
     TCreateInput extends DeepPartial<TSchema>,
     TUpdateInput extends DeepPartial<TSchema>,
 >(
-    schema: Class<TSchema>,
-    service: Class<TService>,
-    queryInput: Class<TQueryInput>,
-    createInput: Class<TCreateInput>,
-    updateInput: Class<TUpdateInput>
+    options: {
+        schema: Class<TSchema>,
+        service: Class<TService>,
+        queryInput: Class<TQueryInput>,
+        createInput: Class<TCreateInput>,
+        updateInput: Class<TUpdateInput>
+    }
 ): Class<IBaseResolver<TSchema>> {
+        const { schema, service, queryInput, createInput, updateInput } = options;
         const lowerCaseName = schema.name.toLocaleLowerCase();
         const capitalizeName = capitalize(schema.name);
         const createTrigger = `on${capitalizeName}Create`;

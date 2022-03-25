@@ -5,19 +5,12 @@ import { BaseSchema } from '../../common/module/base.schema';
 
 @ObjectType()
 @Schema({ timestamps: true })
-export class Color extends BaseSchema {
+export class Opacity extends BaseSchema {
 
     @Field()
     @Prop()
-    day: string;
+    opacity: number;
 
-    @Field()
-    @Prop()
-    night: string;
-
-    @Field()
-    @Prop()
-    dark: string;
 }
 
-export const ColorSchema = SchemaFactory.createForClass(Color);
+export const OpacitySchema = SchemaFactory.createForClass(Opacity);

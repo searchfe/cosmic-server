@@ -20,7 +20,7 @@ export class GQLConfigService {
                 'graphql-ws': {
                     onConnect: async (context: Context<{authorization: string, req: any}>) => {
                         const { connectionParams, extra } = context;
-                        const { Authorization: token } = connectionParams;
+                        const token = connectionParams.authorization;
                         // 尽量减少未授权链接
                         if (!token) {
                             return false;
