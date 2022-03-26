@@ -14,7 +14,7 @@ class BorderItem {
 }
 
 @InputType()
-export class CreatBorderDTO extends CreateBaseDTO {
+export class CreateBorderDTO extends CreateBaseDTO {
 
     @Field(() => BorderItem)
     top: BorderItem;

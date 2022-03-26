@@ -15,7 +15,7 @@ import { Shadow } from '../schema/shadow.schema';
 import { CreateShadowDTO } from '../dto/shadow.dto';
 
 import { Border } from '../schema/border.schema';
-import { CreatBorderDTO } from '../dto/border.dto';
+import { CreateBorderDTO } from '../dto/border.dto';
 
 import { Corner } from '../schema/corner.schema';
 import { CreateCornerDTO } from '../dto/corner.dto';
@@ -74,8 +74,8 @@ export class BorderResolver extends BaseResolver({
     schema: Border,
     service: BorderService,
     queryInput: QueryBaseDTO,
-    createInput: CreatBorderDTO,
-    updateInput: CreatBorderDTO,
+    createInput: CreateBorderDTO,
+    updateInput: CreateBorderDTO,
 }) {}
 
 @Resolver(() => Corner)
