@@ -87,6 +87,14 @@ export class ProjectService {
                 }
                 return projectPlus;
             });
+        } else {
+            result = projects.map(pro => {
+                return {
+                    ...pro,
+                    hasChildren: false,
+                    id: pro._id
+                };
+            });
         }
         return result;
     }
