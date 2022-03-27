@@ -60,7 +60,6 @@ export class KeyNode {
 }
 
 @ObjectType()
-@Schema({ timestamps: true })
 export class Component extends BaseSchema {
     @Field()
     @Prop({ maxlength: 32 })
