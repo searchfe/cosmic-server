@@ -1,55 +1,60 @@
 import { BaseSchema } from '@/design-system/common/module/base.schema';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 
 @ObjectType()
 export class Property {
-    @Field(() => String)
+    @Field()
     name: string;
 
-    @Field(() => String)
+    @Field()
     type: string;
 
-    @Field(() => String)
+    @Field()
     defaultValue: string;
 
-    @Field(() => String)
+    @Field()
     desc: string;
 }
 
 @ObjectType()
 export class Variant {
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 32, required: true, unique: true })
     name: string;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 128, required: true })
     type: string;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 128, required: true })
     defaultValue: string;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 128, required: true })
     desc: string;
 }
 
-export type KeyNodeType = 'Slot' | 'Text';
+export enum KeyNodeType {
+    SLOT = 'Slot',
+    TEXT = 'Text',
+};
+
+registerEnumType(KeyNodeType, { name: 'KeyNodeType' });
 
 @ObjectType()
 export class KeyNode {
-    @Field(() => String)
+    @Field()
     @Prop({ required: true })
     type: KeyNodeType;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 32, required: true })
     name: string;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 128, required: true })
     desc: string;
 }
@@ -57,11 +62,11 @@ export class KeyNode {
 @ObjectType()
 @Schema({ timestamps: true })
 export class Component extends BaseSchema {
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 32 })
     displayName: string;
 
-    @Field(() => String)
+    @Field()
     @Prop({ maxlength: 128 })
     desc: string;
 

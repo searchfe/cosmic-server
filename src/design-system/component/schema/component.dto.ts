@@ -3,57 +3,56 @@ import { InputType, Field, ObjectType, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 import { KeyNodeType } from './component.schema';
 
-
 @ObjectType()
 @InputType()
 export class CreateKeyNode {
-    @Field(() => String)
+    @Field()
     type: KeyNodeType;
 
-    @Field(() => String)
+    @Field()
     name: string;
 
-    @Field(() => String)
+    @Field()
     desc: string;
 }
 
 @ObjectType()
 @InputType()
 export class CreateProperty {
-    @Field(() => String)
+    @Field()
     name: string;
 
-    @Field(() => String)
+    @Field()
     type: string;
 
-    @Field(() => String)
+    @Field()
     defaultValue: string;
 
-    @Field(() => String)
+    @Field()
     desc: string;
 }
 
 @ObjectType()
 @InputType()
 export class CreateVariant {
-    @Field(() => String)
+    @Field()
     name: string;
 
-    @Field(() => String)
+    @Field()
     type: string;
 
-    @Field(() => String)
+    @Field()
     defaultValue: string;
 
-    @Field(() => String)
+    @Field()
     desc: string;
 }
 @InputType()
 export class CreateComponentDTO extends CreateBaseDTO {
-    @Field(() => String)
+    @Field()
     displayName: string;
 
-    @Field(() => String)
+    @Field()
     desc: string;
 
     @Field(() => [CreateKeyNode])
@@ -71,6 +70,6 @@ export class QueryComponentDTO {
     @Field(() => ID)
     team: Types.ObjectId;
 
-    @Field(() => String)
+    @Field()
     name: string;
 }
