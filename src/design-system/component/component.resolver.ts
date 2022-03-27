@@ -1,23 +1,15 @@
-import { Inject } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Resolver } from '@nestjs/graphql';
 import { Component } from './schema/component.schema';
 import { ComponentService } from './component.service';
+import { BaseResolver } from '../common/module/base.resolver';
+import { CreateComponentDTO, QueryComponentDTO } from './schema/component.dto';
 
 
 @Resolver(() => Component)
-export class ComponentResolver {
-    constructor(
-        @Inject(ComponentService)
-        private readonly componentService: ComponentService
-    ) {}
-
-    @Query(() => Component, { name: 'component' })
-    async getComponent(@Args({ name: 'id', type: () => String }) id: string) {
-        return this.componentService.findOne({ id });
-    }
-
-    @Query(() => [Component], { name: 'components' })
-    async getComponents() {
-        return this.componentService.findAll();
-    }
-}
+export class ComponentResolver extends BaseResolver({
+    schema: Component,
+    service: ComponentService,
+    createInput: CreateComponentDTO,
+    queryInput: QueryComponentDTO,
+    updateInput: CreateComponentDTO,
+}) { }

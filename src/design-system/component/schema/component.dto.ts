@@ -1,35 +1,76 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { CreateBaseDTO } from '@/design-system/common/module/base.dto';
+import { InputType, Field, ObjectType, ID } from '@nestjs/graphql';
+import { Types } from 'mongoose';
+import { KeyNodeType } from './component.schema';
 
 
+@ObjectType()
 @InputType()
-export class Property {
-    @Field()
+export class CreateKeyNode {
+    @Field(() => String)
+    type: KeyNodeType;
+
+    @Field(() => String)
     name: string;
 
-    @Field()
+    @Field(() => String)
+    desc: string;
+}
+
+@ObjectType()
+@InputType()
+export class CreateProperty {
+    @Field(() => String)
+    name: string;
+
+    @Field(() => String)
     type: string;
 
-    @Field()
+    @Field(() => String)
     defaultValue: string;
 
-    @Field()
+    @Field(() => String)
     desc: string;
 }
 
+@ObjectType()
 @InputType()
-export class CreateComponentDTO {
-    @Field()
+export class CreateVariant {
+    @Field(() => String)
     name: string;
 
-    @Field()
+    @Field(() => String)
+    type: string;
+
+    @Field(() => String)
+    defaultValue: string;
+
+    @Field(() => String)
+    desc: string;
+}
+@InputType()
+export class CreateComponentDTO extends CreateBaseDTO {
+    @Field(() => String)
+    displayName: string;
+
+    @Field(() => String)
     desc: string;
 
-    @Field(() => [Property])
-    properties: Property[]
+    @Field(() => [CreateKeyNode])
+    keyNodes: CreateKeyNode[];
+
+    @Field(() => [CreateProperty])
+    properties: CreateProperty[];
+
+    @Field(() => [CreateVariant])
+    variants: CreateVariant[];
 }
 
 @InputType()
-export class QueryComponentDTO extends CreateComponentDTO {
-    @Field()
-    id: string;
+export class QueryComponentDTO {
+    @Field(() => ID)
+    team: Types.ObjectId;
+
+    @Field(() => String)
+    name: string;
 }
