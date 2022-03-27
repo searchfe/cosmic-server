@@ -4,7 +4,6 @@ import { CreateBaseDTO } from '../../common/module/base.dto';
 
 @InputType()
 export class CreateColorDTO extends CreateBaseDTO {
-
     @Field()
     day: string;
 

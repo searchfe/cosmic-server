@@ -14,6 +14,6 @@ import { Project, ProjectSchema } from './schema/project.schema';
             { name: Team.name, schema: TeamSchema },
         ]),
     ],
-  providers: [TeamService, ProjectService, ProjectResolver]
+    providers: [TeamService, ProjectService, ProjectResolver],
 })
 export class ProjectionModule {}

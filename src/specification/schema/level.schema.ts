@@ -5,7 +5,7 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 @ObjectType()
-export class Level extends Document{
+export class Level extends Document {
     @Field(() => ID)
     id: string;
 
@@ -15,7 +15,7 @@ export class Level extends Document{
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
-    specification: Types.ObjectId
+    specification: Types.ObjectId;
 
     @Field(() => ID)
     @Prop({ auto: false, required: true })
@@ -39,7 +39,7 @@ export class Item {
     name: string;
 
     @Field(() => [String], { nullable: true })
-    imgs?: string[]
+    imgs?: string[];
 
     @Field({ nullable: true, description: 'text description' })
     text?: string;

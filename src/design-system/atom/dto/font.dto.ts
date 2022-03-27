@@ -1,11 +1,9 @@
-
 import { InputType, Field } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../common/module/base.dto';
 
 
 @InputType()
 export class CreateFontDTO extends CreateBaseDTO {
-
     @Field()
     style: string;
 

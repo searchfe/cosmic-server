@@ -11,7 +11,7 @@ import { TeamService } from './team.service';
     imports: [
         MongooseModule.forFeature([
             { name: Team.name, schema: TeamSchema },
-            { name: User.name, schema: UserSchema }
+            { name: User.name, schema: UserSchema },
         ]),
     ],
     providers: [TeamService, UserService, TeamResolver],

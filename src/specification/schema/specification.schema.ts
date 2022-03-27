@@ -5,7 +5,7 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 @ObjectType()
-export class Specification extends Document{
+export class Specification extends Document {
     @Field(() => ID)
     id: string;
 

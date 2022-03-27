@@ -40,7 +40,7 @@ export class Variant {
 export enum KeyNodeType {
     SLOT = 'Slot',
     TEXT = 'Text',
-};
+}
 
 registerEnumType(KeyNodeType, { name: 'KeyNodeType' });
 

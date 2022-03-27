@@ -6,7 +6,6 @@ import { BaseSchema } from '../../common/module/base.schema';
 @ObjectType()
 @Schema({ timestamps: true })
 export class Color extends BaseSchema {
-
     @Field()
     @Prop()
     day: string;

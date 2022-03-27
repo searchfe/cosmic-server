@@ -10,7 +10,7 @@ import { UserService } from './user.service';
 export class UserResolver {
     constructor(
         @Inject(UserService)
-        private readonly userService: UserService
+        private readonly userService: UserService,
     ) {}
 
     @Query(() => User, { name: 'user' })
@@ -31,7 +31,7 @@ export class UserResolver {
         }
         const newUser = {
             ...userInput,
-            id: targetUser.id
+            id: targetUser.id,
         };
         return await this.userService.update(newUser);
     }

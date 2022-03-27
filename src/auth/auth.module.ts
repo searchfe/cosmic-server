@@ -14,10 +14,10 @@ import { config } from '@/config/config.service';
         PassportModule,
         JwtModule.register({
             secret: config.JWT_SECRET,
-            signOptions: { expiresIn: config.JWT_SIGN_EXPIRES }
-        })
+            signOptions: { expiresIn: config.JWT_SIGN_EXPIRES },
+        }),
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy],
-    exports: [AuthService]
+    exports: [AuthService],
 })
 export class AuthModule {}

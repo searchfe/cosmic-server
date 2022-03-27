@@ -10,18 +10,18 @@ import { Scalar } from '@nestjs/graphql';
 import type { CustomScalar } from '@nestjs/graphql';
 import type { ValueNode } from 'graphql';
 
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tinyColor = require('tinycolor2');
 
-export class ColorString extends String {};
+
+export class ColorString extends String {}
 
 @Scalar('ColorString', () => ColorString)
 export class ColorScalar implements CustomScalar<string, string> {
     description = 'Color scalar';
 
     parseValue(value: string): string {
-        return  tinyColor(value).toRgbString();
+        return tinyColor(value).toRgbString();
     }
 
     serialize(value: string): string {

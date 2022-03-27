@@ -48,6 +48,6 @@ import {
         CornerResolver,
         OpacityService,
         OpacityResolver,
-    ]
+    ],
 })
 export class AtomModule {}

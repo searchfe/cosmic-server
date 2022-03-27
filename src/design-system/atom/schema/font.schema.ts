@@ -1,7 +1,6 @@
-import { Field, ObjectType, ID, registerEnumType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { BaseSchema } from '../../common/module/base.schema';
-
 
 /**
  * From the point of design, this should be devided into two enum
@@ -23,7 +22,6 @@ import { BaseSchema } from '../../common/module/base.schema';
 @Schema({ timestamps: true })
 @ObjectType()
 export class Font extends BaseSchema {
-
     @Field()
     @Prop()
     style: string;

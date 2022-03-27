@@ -1,4 +1,4 @@
-import { InputType, Field, ID  } from '@nestjs/graphql';
+import { InputType, Field, ID } from '@nestjs/graphql';
 
 
 @InputType()
@@ -7,15 +7,27 @@ export class CreateItemDTO {
     name: string;
 
     @Field(() => [String], { nullable: true, defaultValue: [] })
-    imgs?: string[]
+    imgs?: string[];
 
-    @Field({ nullable: true, description: 'text description', defaultValue: '' })
+    @Field({
+        nullable: true,
+        description: 'text description',
+        defaultValue: '',
+    })
     text?: string;
 
-    @Field({ nullable: true, description: 'extra text description', defaultValue: '' })
+    @Field({
+        nullable: true,
+        description: 'extra text description',
+        defaultValue: '',
+    })
     info?: string;
 
-    @Field({ nullable: true, description: 'extra json info', defaultValue: '{}' })
+    @Field({
+        nullable: true,
+        description: 'extra json info',
+        defaultValue: '{}',
+    })
     meta?: string;
 }
 
@@ -27,7 +39,10 @@ export class CreateLevelDTO {
     @Field(() => ID)
     category: string;
 
-    @Field(() => ID, { nullable: true, description: 'the parent Level it belongs to' })
+    @Field(() => ID, {
+        nullable: true,
+        description: 'the parent Level it belongs to',
+    })
     parent?: string;
 
     @Field()

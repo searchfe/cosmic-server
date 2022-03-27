@@ -15,19 +15,20 @@ export class LevelResolver {
         @Inject(LevelService)
         private readonly levelService: LevelService,
         @Inject(SpecificationService)
-        private readonly specificationService: SpecificationService
+        private readonly specificationService: SpecificationService,
     ) {}
 
     @Query(() => Level, { name: 'level' })
     async getLevel(
         @Args({ name: 'id' }) id: string,
-        @Args({ name: 'fields', type: () => [String], nullable: true }) fields?: Array<string>
+        @Args({ name: 'fields', type: () => [String], nullable: true })
+        fields?: Array<string>,
     ) {
         const projection = fields ? fileds2MongoProjection(fields) : undefined;
         const level = await this.levelService.findOne(id, projection);
         const result = {
             id: level._id,
-            ...level
+            ...level,
         };
         delete result._id;
         return result;
@@ -36,7 +37,8 @@ export class LevelResolver {
     @Query(() => [Level], { name: 'levels' })
     async getLevels(
         @Args({ name: 'specification' }) specification: string,
-        @Args({ name: 'categories', type: () => [String] }) categories: Array<string>,
+        @Args({ name: 'categories', type: () => [String] })
+        categories: Array<string>,
     ) {
         return await this.levelService.findAll(specification, categories);
     }
@@ -44,7 +46,9 @@ export class LevelResolver {
     @Mutation(() => Level)
     async createLevel(@Args('level') level: CreateLevelDTO) {
         const spec = await this.specificationService.getCategory(
-            level.specification, { id: level.category }, { id: 1, categories: 1 }
+            level.specification,
+            { id: level.category },
+            { id: 1, categories: 1 },
         );
         if (!spec || !spec.categories || !spec.categories.length) {
             throw new UserInputError('category not found');
@@ -55,7 +59,7 @@ export class LevelResolver {
     @Mutation(() => String)
     async createItem(
         @Args('levelId') levelId: string,
-        @Args('item') item: CreateItemDTO
+        @Args('item') item: CreateItemDTO,
     ) {
         const result = await this.levelService.createItem(levelId, item);
         if (result) {

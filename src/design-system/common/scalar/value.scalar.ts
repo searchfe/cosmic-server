@@ -3,10 +3,10 @@
  * @description normal value. support px and %
  */
 
-import { Scalar, CustomScalar } from '@nestjs/graphql';
-import { Kind, ValueNode } from 'graphql';
+// import { Scalar, CustomScalar } from '@nestjs/graphql';
+// import { Kind, ValueNode } from 'graphql';
 
-type UnitType = 'PIXELS' | 'PERCENT';
+// type UnitType = 'PIXELS' | 'PERCENT';
 /*
 export class Value {
     constructor(

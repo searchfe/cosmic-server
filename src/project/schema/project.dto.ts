@@ -29,7 +29,9 @@ export class QueryProjectDTO {
 }
 
 @InputType()
-export class UpdateProjectDTO extends PickType(CreateProjectDTO, ['name'] as const) {
+export class UpdateProjectDTO extends PickType(CreateProjectDTO, [
+    'name',
+] as const) {
     @Field(() => ID)
     id: string;
 }

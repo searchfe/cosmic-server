@@ -3,11 +3,14 @@
  * @description vector scalar, accepts {x, y} format json string, returns Vector object.
  */
 
-import { Scalar, CustomScalar } from '@nestjs/graphql';
-import { Kind, ValueNode } from 'graphql';
+import type { CustomScalar } from '@nestjs/graphql';
+import { Scalar } from '@nestjs/graphql';
+import type { ValueNode } from 'graphql';
+import { Kind } from 'graphql';
+
 
 export class Vector {
-    constructor(public readonly x: number, public readonly y: number) { }
+    constructor(public readonly x: number, public readonly y: number) {}
 }
 
 @Scalar('Vetor', () => Vector)
@@ -15,7 +18,7 @@ export class VectorScalar implements CustomScalar<Vector, Vector> {
     description = 'vector scalar. For excample {x: 1, y: 2}';
 
     parseValue(value: string): Vector {
-        return  JSON.parse(value) as Vector;
+        return JSON.parse(value) as Vector;
     }
 
     serialize(value: Vector): Vector {
