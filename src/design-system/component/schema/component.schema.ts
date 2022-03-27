@@ -59,6 +59,7 @@ export class KeyNode {
     desc: string;
 }
 
+@Schema({ timestamps: true })
 @ObjectType()
 export class Component extends BaseSchema {
     @Field()
