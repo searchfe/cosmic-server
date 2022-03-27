@@ -11,7 +11,9 @@ export class CreateSpecificationDTO {
 }
 
 @InputType()
-export class UpdateSpecificationDTO extends PickType(CreateSpecificationDTO, ['name'] as const) {
+export class UpdateSpecificationDTO extends PickType(CreateSpecificationDTO, [
+    'name',
+] as const) {
     @Field(() => ID)
     id: string;
 }
@@ -29,7 +31,10 @@ export class CreateCategoryDTO {
 }
 
 @InputType()
-export class UpdateCategoryDTO extends PickType(CreateCategoryDTO, ['specificationId', 'name'] as const) {
+export class UpdateCategoryDTO extends PickType(CreateCategoryDTO, [
+    'specificationId',
+    'name',
+] as const) {
     @Field(() => ID)
     id: string;
 }

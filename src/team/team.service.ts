@@ -11,14 +11,18 @@ import type { MongoProjection } from '@/common/types';
 export class TeamService {
     constructor(
         @InjectModel(Team.name)
-        private readonly teamModel: Model<Team>
+        private readonly teamModel: Model<Team>,
     ) {}
 
     async findOne(teamId: string, fields?: MongoProjection<Team>) {
         if (!fields) {
             return await this.teamModel.findById(teamId).exec();
         }
-        return await this.teamModel.findById(teamId).select(fields).lean().exec();
+        return await this.teamModel
+            .findById(teamId)
+            .select(fields)
+            .lean()
+            .exec();
     }
 
     async create(team: Pick<Team, 'name' | 'members'>) {
@@ -32,14 +36,26 @@ export class TeamService {
     async update(team: Pick<Team, 'name' | 'id'>) {
         const updateTeam = { ...team };
         delete updateTeam.id;
-        return await this.teamModel.findByIdAndUpdate(team.id, updateTeam, { new: true }).exec();
+        return await this.teamModel
+            .findByIdAndUpdate(team.id, updateTeam, { new: true })
+            .exec();
     }
 
-    async createMember(teamId: string, member: { user: string, permission: PermissionEnum}): Promise<boolean> {
-        const result =  await this.teamModel.findByIdAndUpdate(
-            teamId,
-            { $addToSet: { members: { user: Types.ObjectId(member.user), permission: member.permission } } }
-        ).select({ id: 0 }).exec();
+    async createMember(
+        teamId: string,
+        member: { user: string; permission: PermissionEnum },
+    ): Promise<boolean> {
+        const result = await this.teamModel
+            .findByIdAndUpdate(teamId, {
+                $addToSet: {
+                    members: {
+                        user: Types.ObjectId(member.user),
+                        permission: member.permission,
+                    },
+                },
+            })
+            .select({ id: 0 })
+            .exec();
         if (result) {
             return true;
         }

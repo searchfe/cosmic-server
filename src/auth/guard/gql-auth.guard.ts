@@ -1,4 +1,5 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import type { ExecutionContext } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { RESOLVER_TYPE_METADATA } from '@nestjs/graphql/dist/graphql.constants';
@@ -17,10 +18,10 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
         const resolvers = this.reflector.getAll(RESOLVER_TYPE_METADATA, [
             context.getClass(),
         ]);
-        const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-            context.getHandler(),
-            context.getClass(),
-        ]);
+        const isPublic = this.reflector.getAllAndOverride<boolean>(
+            IS_PUBLIC_KEY,
+            [context.getHandler(), context.getClass()],
+        );
         if (!(resolvers.length && resolvers[0]) || isPublic) {
             return true;
         }
@@ -32,7 +33,7 @@ export class GqlAuthGuard extends AuthGuard('jwt') {
         return ctx.req;
     }
 
-    handleRequest(err, user, info) {
+    handleRequest(err, user, _info) {
         if (err || !user) {
             throw new AuthenticationError('UNAUTHENTICATED');
         }

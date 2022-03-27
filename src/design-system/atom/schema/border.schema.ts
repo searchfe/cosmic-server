@@ -5,7 +5,6 @@ import { BaseSchema } from '../../common/module/base.schema';
 
 @ObjectType()
 export class BorderItem {
-
     @Field(() => String)
     weight: string;
 
@@ -13,11 +12,9 @@ export class BorderItem {
     style: string;
 }
 
-
 @Schema({ timestamps: true })
 @ObjectType()
 export class Border extends BaseSchema {
-
     @Field(() => BorderItem)
     @Prop()
     top: BorderItem;
@@ -33,7 +30,6 @@ export class Border extends BaseSchema {
     @Field(() => BorderItem)
     @Prop()
     left: BorderItem;
-
 }
 
 export const BorderSchema = SchemaFactory.createForClass(Border);

@@ -9,19 +9,19 @@ import { Opacity } from '../schema/opacity.schema';
 
 
 @Injectable()
-export class ColorService extends BaseDataService(Color){}
+export class ColorService extends BaseDataService(Color) {}
 
 @Injectable()
-export class OpacityService extends BaseDataService(Opacity){}
+export class OpacityService extends BaseDataService(Opacity) {}
 
 @Injectable()
-export class FontService extends BaseDataService(Font){}
+export class FontService extends BaseDataService(Font) {}
 
 @Injectable()
-export class ShadowService extends BaseDataService(Shadow){}
+export class ShadowService extends BaseDataService(Shadow) {}
 
 @Injectable()
-export class BorderService extends BaseDataService(Border){}
+export class BorderService extends BaseDataService(Border) {}
 
 @Injectable()
-export class CornerService extends BaseDataService(Corner){}
+export class CornerService extends BaseDataService(Corner) {}

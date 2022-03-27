@@ -5,14 +5,13 @@ import { Document } from 'mongoose';
 
 @ObjectType()
 @Schema({ timestamps: true })
-export class User extends Document{
-
+export class User extends Document {
     @Field(() => ID)
     id: string;
 
     @Field(() => String)
     @Prop({ maxlength: 64, required: true, unique: true })
-    email: string
+    email: string;
 
     @Field(() => String)
     @Prop({ maxlength: 64, required: true })

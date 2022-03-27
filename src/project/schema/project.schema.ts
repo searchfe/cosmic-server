@@ -27,5 +27,4 @@ export class ProjectPlus extends Project {
     public hasChildren: boolean;
 }
 
-
 export const ProjectSchema = SchemaFactory.createForClass(Project);

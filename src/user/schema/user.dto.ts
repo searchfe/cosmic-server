@@ -23,7 +23,11 @@ export class CreateUserDTO {
 }
 
 @InputType()
-export class UpdateUserDTO extends PickType(CreateUserDTO, ['name', 'intro', 'avatar'] as const) {
+export class UpdateUserDTO extends PickType(CreateUserDTO, [
+    'name',
+    'intro',
+    'avatar',
+] as const) {
     @Field()
     id: string;
 }

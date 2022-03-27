@@ -20,7 +20,6 @@ import { CreateBorderDTO } from '../dto/border.dto';
 import { Corner } from '../schema/corner.schema';
 import { CreateCornerDTO } from '../dto/corner.dto';
 
-
 import {
     ColorService,
     OpacityService,
@@ -87,13 +86,10 @@ export class CornerResolver extends BaseResolver({
     updateInput: CreateCornerDTO,
 }) {}
 
-
 // @Resolver(() => Constraint)
 // export class ConstraintResolver extends BaseResolver<
 //     Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO
 // >(Constraint, ConstaintService, QueryConstraintDTO, CreateConstraintDTO, CreateConstraintDTO) {}
-
-
 
 // @Resolver(() => Stroke)
 // export class StrokeResolver extends BaseResolver<

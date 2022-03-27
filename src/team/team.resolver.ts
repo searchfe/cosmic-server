@@ -2,7 +2,12 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserInputError } from 'apollo-server-core';
 import { UserService } from './../user/user.service';
-import { AddTeamMemberDTO, CreateTeamDTO, PermissionEnum, UpdateTeamDTO } from './schema/team.dto';
+import {
+    AddTeamMemberDTO,
+    CreateTeamDTO,
+    PermissionEnum,
+    UpdateTeamDTO,
+} from './schema/team.dto';
 import { Team } from './schema/team.schema';
 import { TeamService } from './team.service';
 
@@ -13,13 +18,11 @@ export class TeamResolver {
         @Inject(TeamService)
         private readonly teamService: TeamService,
         @Inject(UserService)
-        private readonly userService: UserService
+        private readonly userService: UserService,
     ) {}
 
     @Query(() => Team, { name: 'team' })
-    async getTeam(
-        @Args({ name: 'id', type: () => String }) id: string,
-    ) {
+    async getTeam(@Args({ name: 'id', type: () => String }) id: string) {
         return await this.teamService.findOne(id);
     }
 
@@ -58,7 +61,8 @@ export class TeamResolver {
     @Mutation(() => Boolean)
     async createMember(
         @Args('teamId') teamId: string,
-        @Args({ name: 'member', type: () => AddTeamMemberDTO }) member: AddTeamMemberDTO
+        @Args({ name: 'member', type: () => AddTeamMemberDTO })
+        member: AddTeamMemberDTO,
     ) {
         const user = await this.userService.findOne({ id: member.user });
         if (!user) {
@@ -68,9 +72,9 @@ export class TeamResolver {
         if (!team) {
             throw new UserInputError('team not found');
         }
-        return await this.teamService.createMember(
-            team._id,
-            { user: member.user, permission: member.permission || PermissionEnum.NORMAL }
-        );
+        return await this.teamService.createMember(team._id, {
+            user: member.user,
+            permission: member.permission || PermissionEnum.NORMAL,
+        });
     }
 }

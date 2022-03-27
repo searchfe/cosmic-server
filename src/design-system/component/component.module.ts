@@ -7,10 +7,12 @@ import { ComponentService } from './component.service';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Component.name, schema: ComponentSchema }]),
+        MongooseModule.forFeature([
+            { name: Component.name, schema: ComponentSchema },
+        ]),
     ],
     controllers: [],
     providers: [ComponentService, ComponentResolver],
     exports: [ComponentService],
 })
-export class ComponentModule { }
+export class ComponentModule {}

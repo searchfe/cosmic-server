@@ -7,7 +7,6 @@ import { PermissionEnum } from './team.dto';
 @ObjectType()
 @Schema({ timestamps: true })
 export class Team extends Document {
-
     @Field(() => ID)
     id: string;
 

@@ -6,7 +6,6 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 @ObjectType({ isAbstract: true })
 export class BaseSchema extends Document {
-
     @Field(() => ID)
     id: string;
 

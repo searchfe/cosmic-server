@@ -3,7 +3,7 @@ import { Cache } from 'cache-manager';
 import { join } from 'path';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
-import type { GqlModuleOptions, } from '@nestjs/graphql';
+import type { GqlModuleOptions } from '@nestjs/graphql';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import type { Context } from 'graphql-ws';
 
@@ -18,7 +18,9 @@ export class GQLConfigService {
                 // connect 和 subscribe 都去redis校验下token，不存在就关闭链接 401
                 // gql guard 就无视协议了，只从req.headers里取token
                 'graphql-ws': {
-                    onConnect: async (context: Context<{authorization: string, req: any}>) => {
+                    onConnect: async (
+                        context: Context<{ authorization: string; req: any }>,
+                    ) => {
                         const { connectionParams, extra } = context;
                         const token = connectionParams.authorization;
                         // 尽量减少未授权链接
@@ -26,17 +28,20 @@ export class GQLConfigService {
                             return false;
                         }
                         // connect 直接传token string，不要传 http Authentication string
-                        const user = await this.cacheManager.get<{ token: string }>(`user-${token}`);
+                        const user = await this.cacheManager.get<{
+                            token: string;
+                        }>(`user-${token}`);
                         if (!user) {
                             return false;
                         }
-                        //@ts-ignore
+                        // @ts-expect-error TODO
                         const headers = extra.request?.headers;
                         headers.authorization = token;
                     },
                     onSubscribe: async (ctx, msg) => {
-                        //@ts-ignore
-                        const { Authorization: token } = msg.payload?.context?.fetchOptions?.headers || {};
+                        const { Authorization: token } =
+                            // @ts-expect-error TODO
+                            msg.payload?.context?.fetchOptions?.headers || {};
                         if (!token) {
                             throw new AuthenticationError('UNAUTHENTICATED');
                         }
@@ -44,9 +49,9 @@ export class GQLConfigService {
                     },
                 },
             },
-            context: ctx => {
+            context: (ctx) => {
                 if (!ctx.req && ctx.extra) {
-                    ctx.req = ctx.extra.request
+                    ctx.req = ctx.extra.request;
                 }
                 return ctx;
             },

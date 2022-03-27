@@ -1,11 +1,10 @@
-import { InputType, Field, ObjectType } from "@nestjs/graphql";
+import { InputType, Field, ObjectType } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../common/module/base.dto';
 
 
 @ObjectType()
 @InputType('BorderItemInput')
 class BorderItem {
-
     @Field(() => String)
     weight: string;
 
@@ -15,7 +14,6 @@ class BorderItem {
 
 @InputType()
 export class CreateBorderDTO extends CreateBaseDTO {
-
     @Field(() => BorderItem)
     top: BorderItem;
 

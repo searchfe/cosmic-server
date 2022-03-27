@@ -9,7 +9,7 @@ export class AuthService {
         @Inject(UserService)
         private userService: UserService,
         @Inject(JwtService)
-        private jwtService: JwtService
+        private jwtService: JwtService,
     ) {}
 
     async validateUser(username: string, password: string): Promise<any> {
@@ -17,7 +17,7 @@ export class AuthService {
         return user;
     }
 
-    async login(user: { username: string, id: string }) {
+    async login(user: { username: string; id: string }) {
         const payload = { username: user.username, sub: user.id };
         return {
             accessToken: this.jwtService.sign(payload),

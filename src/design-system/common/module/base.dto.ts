@@ -3,7 +3,6 @@ import { InputType, Field, ID } from '@nestjs/graphql';
 
 @InputType({ isAbstract: true })
 export class CreateBaseDTO {
-
     @Field()
     name: string;
 
@@ -13,7 +12,6 @@ export class CreateBaseDTO {
 
 @InputType({ isAbstract: true })
 export class QueryBaseDTO {
-
     @Field()
     id: string;
 

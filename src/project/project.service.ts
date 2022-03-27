@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isSuccessfulQuery } from '@/common/util/db';
 import { Model, Types } from 'mongoose';
 
-import type { FilterQuery,  LeanDocument } from 'mongoose';
+import type { FilterQuery, LeanDocument } from 'mongoose';
 import type { MongoProjection } from '@/common/types';
 import type { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
 
@@ -14,7 +14,7 @@ import type { CreateProjectDTO, UpdateProjectDTO } from './schema/project.dto';
 export class ProjectService {
     constructor(
         @InjectModel(Project.name)
-        private readonly projectModel: Model<Project>
+        private readonly projectModel: Model<Project>,
     ) {}
 
     async create(project: CreateProjectDTO) {
@@ -34,9 +34,16 @@ export class ProjectService {
 
     async findOne(projectId: string, fields?: MongoProjection<Project>) {
         if (!fields) {
-            return await this.projectModel.findById(projectId).lean(false).exec();
+            return await this.projectModel
+                .findById(projectId)
+                .lean(false)
+                .exec();
         }
-        return await this.projectModel.findById(projectId).select(fields).lean(false).exec();
+        return await this.projectModel
+            .findById(projectId)
+            .select(fields)
+            .lean(false)
+            .exec();
     }
 
     async findAll(project: Partial<CreateProjectDTO> = {}) {
@@ -52,10 +59,12 @@ export class ProjectService {
 
     async update(project: UpdateProjectDTO) {
         const newProject = {
-            ...project
+            ...project,
         };
         delete newProject.id;
-        const result =  await this.projectModel.updateOne({ '_id': project.id }, newProject).exec();
+        const result = await this.projectModel
+            .updateOne({ _id: project.id }, newProject)
+            .exec();
         if (isSuccessfulQuery(result)) {
             return true;
         }
@@ -67,15 +76,25 @@ export class ProjectService {
     }
 
     async projectStructure(id: string) {
-        const projects = await this.projectModel.find({ parent: Types.ObjectId(id) }).lean(true).exec();
-        const children = await this.projectModel.find().in('parent', projects.map(p => p._id)).lean(true).exec();
+        const projects = await this.projectModel
+            .find({ parent: Types.ObjectId(id) })
+            .lean(true)
+            .exec();
+        const children = await this.projectModel
+            .find()
+            .in(
+                'parent',
+                projects.map((p) => p._id),
+            )
+            .lean(true)
+            .exec();
         let result: LeanDocument<ProjectPlus>[] = [];
         if (children.length) {
-            const parentSet = new Set;
-            children.forEach(child => {
+            const parentSet = new Set();
+            children.forEach((child) => {
                 parentSet.add(child.parent.toString());
             });
-            result = projects.map(p => {
+            result = projects.map((p) => {
                 const projectPlus = {
                     ...p,
                     id: p._id,
@@ -88,11 +107,11 @@ export class ProjectService {
                 return projectPlus;
             });
         } else {
-            result = projects.map(pro => {
+            result = projects.map((pro) => {
                 return {
                     ...pro,
                     hasChildren: false,
-                    id: pro._id
+                    id: pro._id,
                 };
             });
         }

@@ -3,13 +3,13 @@ import type { MongoProjection } from '../types';
 
 export function fileds2MongoProjection<T>(
     includes: Array<keyof T>,
-    excludes: Array<keyof T> = []
+    excludes: Array<keyof T> = [],
 ) {
     const result: Partial<MongoProjection<T>> = {};
-    includes.forEach(field => {
+    includes.forEach((field) => {
         result[field] = 1;
     });
-    excludes.forEach(field => {
+    excludes.forEach((field) => {
         if (result[field] === undefined) {
             result[field] = 0;
         }

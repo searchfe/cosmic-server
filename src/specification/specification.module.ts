@@ -2,7 +2,10 @@ import { LevelService } from './level.service';
 import { LevelResolver } from './level.resolver';
 import { Level, LevelSchema } from './schema/level.schema';
 import { Team, TeamSchema } from '@/team/schema/team.schema';
-import { Specification, SpecificationSchema } from './schema/specification.schema';
+import {
+    Specification,
+    SpecificationSchema,
+} from './schema/specification.schema';
 import { TeamService } from '@/team/team.service';
 import { Module } from '@nestjs/common';
 import { SpecificationService } from './specification.service';
@@ -18,6 +21,12 @@ import { MongooseModule } from '@nestjs/mongoose';
             { name: Level.name, schema: LevelSchema },
         ]),
     ],
-  providers: [SpecificationService, SpecificationResolver, TeamService, LevelResolver, LevelService]
+    providers: [
+        SpecificationService,
+        SpecificationResolver,
+        TeamService,
+        LevelResolver,
+        LevelService,
+    ],
 })
 export class SpecificationModule {}

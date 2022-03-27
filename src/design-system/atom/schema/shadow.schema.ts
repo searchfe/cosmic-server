@@ -1,20 +1,19 @@
-import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Types } from "mongoose";
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 import { BaseSchema } from '../../common/module/base.schema';
 
 
 export enum EShadowType {
     INSET = 'inset',
     OUTSET = 'outset',
-};
+}
 
 registerEnumType(EShadowType, { name: 'EShadowType' });
 
 @Schema({ timestamps: true })
 @ObjectType()
 export class Shadow extends BaseSchema {
-
     @Field()
     @Prop()
     type?: EShadowType;

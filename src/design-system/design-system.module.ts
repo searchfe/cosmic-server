@@ -6,10 +6,7 @@ import { ComponentModule } from './component/component.module';
 
 
 @Module({
-    imports: [
-        AtomModule,
-        ComponentModule,
-    ],
-    providers: [DesignSystemResolver, DesignSystemService]
+    imports: [AtomModule, ComponentModule],
+    providers: [DesignSystemResolver, DesignSystemService],
 })
-export class DesignSystemModule { }
+export class DesignSystemModule {}
