@@ -3,7 +3,7 @@ import { BaseResolver } from '../../common/module/base.resolver';
 import { QueryBaseDTO } from '../../common/module/base.dto';
 
 import { Color } from '../schema/color.schema';
-import { CreateColorDTO } from '../dto/color.dto';
+import { CreateColorDTO, QueryColorDTO } from '../dto/color.dto';
 
 import { Opacity } from '../schema/opacity.schema';
 import { CreateOpacityDTO } from '../dto/opacity.dto';
@@ -36,7 +36,7 @@ import {
 export class ColorResolver extends BaseResolver({
     schema: Color,
     service: ColorService,
-    queryInput: QueryBaseDTO,
+    queryInput: QueryColorDTO,
     createInput: CreateColorDTO,
     updateInput: CreateColorDTO,
 }) {}

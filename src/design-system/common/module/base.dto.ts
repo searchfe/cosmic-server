@@ -13,8 +13,8 @@ export class CreateBaseDTO {
 @InputType({ isAbstract: true })
 export class QueryBaseDTO {
     @Field()
-    id: string;
+    id?: string;
 
     @Field(() => ID)
-    team: string;
+    team?: string;
 }

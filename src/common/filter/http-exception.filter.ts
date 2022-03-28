@@ -1,6 +1,5 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Catch, HttpException } from '@nestjs/common';
-import { config } from '@/config/config.service';
 
 
 @Catch(HttpException)

@@ -2,6 +2,7 @@ import { Query, Mutation, Args, Resolver, Subscription } from '@nestjs/graphql';
 import { capitalize } from 'lodash';
 import { Inject } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
+import { UserInputError } from 'apollo-server-core';
 
 import type { BaseSchema } from './base.schema';
 import type { IBaseDataService } from './base.service';
@@ -52,6 +53,22 @@ export function BaseResolver<
             @Args({ type: () => createInput, name: 'data' })
             data: TCreateInput,
         ): Promise<Class<TSchema>> {
+            const result = await this.dataService.create(data);
+            pubsub.publish(createTrigger, { [createTrigger]: result });
+            return result;
+        }
+
+        @Mutation(() => schema, { name: `createUnique${capitalizeName}` })
+        async createUnique(
+            @Args({ type: () => createInput, name: 'data' })
+            data: TCreateInput,
+            @Args({ type: () => queryInput, name: 'filter' })
+            filter: TQueryInput,
+        ): Promise<Class<TSchema>> {
+            const existingData = await this.dataService.findAll(filter);
+            if (existingData.length > 0) {
+                throw new UserInputError('data existing', { data: existingData });
+            }
             const result = await this.dataService.create(data);
             pubsub.publish(createTrigger, { [createTrigger]: result });
             return result;
