@@ -69,8 +69,8 @@ export class CreateComponentDTO extends CreateBaseDTO {
 @InputType()
 export class QueryComponentDTO {
     @Field(() => ID)
-    team: Types.ObjectId;
+    team?: Types.ObjectId;
 
     @Field()
-    name: string;
+    name?: string;
 }
