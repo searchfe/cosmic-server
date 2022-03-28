@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 
@@ -21,4 +21,10 @@ export class CreateFontDTO extends CreateBaseDTO {
 
     @Field()
     family: string;
+}
+
+@InputType()
+export class QueryFontDTO extends PartialType(CreateFontDTO) {
+    @Field()
+    id?: string;
 }

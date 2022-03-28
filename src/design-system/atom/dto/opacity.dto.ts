@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 
@@ -6,4 +6,10 @@ import { CreateBaseDTO } from '../../../common/module/base.dto';
 export class CreateOpacityDTO extends CreateBaseDTO {
     @Field()
     opacity: number;
+}
+
+@InputType()
+export class QueryOpacityDTO extends PartialType(CreateOpacityDTO) {
+    @Field()
+    id?: string;
 }

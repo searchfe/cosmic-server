@@ -1,4 +1,4 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 
@@ -15,4 +15,10 @@ export class CreateCornerDTO extends CreateBaseDTO {
 
     @Field(() => [String])
     br: string[];
+}
+
+@InputType()
+export class QueryCornerDTO extends PartialType(CreateCornerDTO) {
+    @Field()
+    id?: string;
 }
