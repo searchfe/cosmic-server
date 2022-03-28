@@ -59,21 +59,6 @@ export class ConfigService {
     get TEMP_FLODER() {
         return this.envConfig.TEMP_FLODER;
     }
-    get PAGE_404() {
-        return this.envConfig.PAGE_404;
-    }
-    get PAGE_ACCESS() {
-        return this.envConfig.PAGE_ACCESS;
-    }
-    get PAGE_ERROR() {
-        return this.envConfig.PAGE_ERROR;
-    }
-    get PAGE_LANDING() {
-        return this.envConfig.PAGE_LANDING;
-    }
-    get PAGE_LOGIN() {
-        return this.envConfig.PAGE_LOGIN;
-    }
 
     get DB_TYPE() {
         return this.envConfig.DB_TYPE as any;
@@ -130,11 +115,6 @@ export class ConfigService {
             STATIC_PREFIX: Joi.string().required(),
             TEMP_FLODER: Joi.string().required(),
             USER_AVATAR_FLODER: Joi.string().required(),
-            PAGE_404: Joi.string().required(),
-            PAGE_ACCESS: Joi.string().required(),
-            PAGE_ERROR: Joi.string().required(),
-            PAGE_LANDING: Joi.string().required(),
-            PAGE_LOGIN: Joi.string().required(),
             DB_TYPE: Joi.string().required(),
             DB_HOST: Joi.string().allow('').allow(null),
             DB_PORT: Joi.string().allow('').allow(null),
