@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
-import { BaseSchema } from '../../common/module/base.schema';
+import { BaseSchema } from '../../../common/module/base.schema';
 
 /**
  * From the point of design, this should be devided into two enum

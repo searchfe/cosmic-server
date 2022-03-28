@@ -1,6 +1,6 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
+import { InputType, Field, ID, PartialType } from '@nestjs/graphql';
 import { EShadowType } from '../schema/shadow.schema';
-import { CreateBaseDTO } from '../../common/module/base.dto';
+import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 
 @InputType()
@@ -22,4 +22,10 @@ export class CreateShadowDTO extends CreateBaseDTO {
 
     @Field(() => ID)
     color?: string;
+}
+
+@InputType()
+export class QueryShadowDTO extends PartialType(CreateShadowDTO) {
+    @Field()
+    id?: string;
 }

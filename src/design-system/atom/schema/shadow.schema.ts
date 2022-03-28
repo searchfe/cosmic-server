@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
-import { BaseSchema } from '../../common/module/base.schema';
+import { BaseSchema } from '../../../common/module/base.schema';
 
 
 export enum EShadowType {

@@ -12,6 +12,7 @@ import { DesignSystemModule } from '@/design-system/design-system.module';
 import { GQLModule } from '@/gql/gql.module';
 import { TeamModule } from '@/team/team.module';
 import { UserModule } from '@/user/user.module';
+import { WorkbenchModule } from '@/workbench/workbench.module';
 
 
 @Module({
@@ -34,6 +35,7 @@ import { UserModule } from '@/user/user.module';
         SpecificationModule,
         ProjectionModule,
         DesignSystemModule,
+        WorkbenchModule,
     ],
     controllers: [AppController],
 })

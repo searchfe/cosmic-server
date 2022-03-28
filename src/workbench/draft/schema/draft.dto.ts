@@ -3,13 +3,10 @@ import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 
 @InputType()
-export class CreateOpacityDTO extends CreateBaseDTO {
-    @Field()
-    opacity: number;
-}
+export class CreateDraftDTO extends CreateBaseDTO {}
 
 @InputType()
-export class QueryOpacityDTO extends PartialType(CreateOpacityDTO) {
+export class QueryDraftDTO extends PartialType(CreateDraftDTO) {
     @Field()
     id?: string;
 }
