@@ -30,6 +30,6 @@ async function bootstrap() {
 
     app.useGlobalFilters(new HttpExceptionFilter());
 
-    await app.listen(3001);
+    await app.listen(config.PORT || 3001);
 }
 bootstrap();
