@@ -1,4 +1,4 @@
-import { BaseSchema } from '@/design-system/common/module/base.schema';
+import { BaseSchema } from '@/common/module/base.schema';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 

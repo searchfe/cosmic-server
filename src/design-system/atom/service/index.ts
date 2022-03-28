@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseDataService } from '../../common/module/base.service';
+import { BaseDataService } from '../../../common/module/base.service';
 import { Font } from '../schema/font.schema';
 import { Shadow } from '../schema/shadow.schema';
 import { Corner } from '../schema/corner.schema';

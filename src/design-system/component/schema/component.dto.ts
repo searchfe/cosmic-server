@@ -1,4 +1,4 @@
-import { CreateBaseDTO } from '@/design-system/common/module/base.dto';
+import { CreateBaseDTO } from '@/common/module/base.dto';
 import { InputType, Field, ObjectType, ID } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 import { KeyNodeType } from './component.schema';

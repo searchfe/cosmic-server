@@ -1,6 +1,6 @@
 import { Resolver } from '@nestjs/graphql';
-import { BaseResolver } from '../../common/module/base.resolver';
-import { QueryBaseDTO } from '../../common/module/base.dto';
+import { BaseResolver } from '../../../common/module/base.resolver';
+import { QueryBaseDTO } from '../../../common/module/base.dto';
 
 import { Color } from '../schema/color.schema';
 import { CreateColorDTO, QueryColorDTO } from '../dto/color.dto';

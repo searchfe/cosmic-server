@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Component } from './schema/component.schema';
-import { BaseDataService } from '../common/module/base.service';
+import { BaseDataService } from '../../common/module/base.service';
 
 
 @Injectable()
