@@ -1,4 +1,4 @@
-import { InputType, Field, ID, PartialType } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { CreateBaseDTO } from '../../../common/module/base.dto';
 
 

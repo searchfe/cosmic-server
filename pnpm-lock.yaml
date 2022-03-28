@@ -26,8 +26,9 @@ specifiers:
   cache-manager-redis-store: ^2.0.0
   class-transformer: ~0.5.1
   class-validator: ~0.13.2
+  commitizen: ^4.2.4
   cross-env: ^7.0.3
-  cz-conventional-changelog: ^3.2.0
+  cz-conventional-changelog: ^3.3.0
   dotenv: ^8.2.0
   eslint: ^8.12.0
   eslint-import-resolver-typescript: ^2.7.0
@@ -103,6 +104,7 @@ devDependencies:
   '@types/supertest': 2.0.11
   '@typescript-eslint/eslint-plugin': 5.16.0_1cfd4865634695f241f9ce8a00c153a8
   '@typescript-eslint/parser': 5.16.0_eslint@8.12.0+typescript@4.6.2
+  commitizen: 4.2.4
   cross-env: 7.0.3
   cz-conventional-changelog: 3.3.0
   eslint: 8.12.0
@@ -586,7 +588,7 @@ packages:
     hasBin: true
     dependencies:
       exec-sh: 0.3.6
-      minimist: 1.2.5
+      minimist: 1.2.6
     dev: true
 
   /@commitlint/config-validator/16.2.1:
@@ -2055,8 +2057,8 @@ packages:
       type-fest: 0.21.3
     dev: true
 
-  /ansi-regex/3.0.0:
-    resolution: {integrity: sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=}
+  /ansi-regex/3.0.1:
+    resolution: {integrity: sha512-+O9Jct8wf++lXxxFc4hc8LsjaSq0HFzzL7cVsw8pRDIPdjKD2mT4ytDZlLuSBZ4cLKZFXIrMGO7DbQCtMJJMKw==}
     engines: {node: '>=4'}
     dev: true
 
@@ -7176,7 +7178,7 @@ packages:
     resolution: {integrity: sha1-qEeQIusaw2iocTibY1JixQXuNo8=}
     engines: {node: '>=4'}
     dependencies:
-      ansi-regex: 3.0.0
+      ansi-regex: 3.0.1
     dev: true
 
   /strip-ansi/5.2.0:

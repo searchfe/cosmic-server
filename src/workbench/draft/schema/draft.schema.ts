@@ -1,4 +1,4 @@
-import {ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseSchema } from '../../../common/module/base.schema';
 
