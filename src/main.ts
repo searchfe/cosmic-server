@@ -26,7 +26,6 @@ async function bootstrap() {
     // app.useStaticAssets(`${config.LOCAL_WEB_ROOT}/admin/`, {prefix: '/admin/', dotfiles: "deny",index: false,});
 
     app.setBaseViewsDir([config.LOCAL_WEB_ROOT]);
-    app.setViewEngine('hbs');
 
     app.useGlobalFilters(new HttpExceptionFilter());
 
