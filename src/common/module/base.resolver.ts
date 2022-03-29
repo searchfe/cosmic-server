@@ -74,7 +74,7 @@ export function BaseResolver<
             return result;
         }
 
-        @Mutation(() => schema, { name: `update${capitalizeName}` })
+        @Mutation(() => Boolean, { name: `update${capitalizeName}` })
         async update(
             @Args({ type: () => updateInput, name: 'data' })
             data: TUpdateInput,
@@ -82,7 +82,7 @@ export function BaseResolver<
             return await this.dataService.update(data);
         }
 
-        @Mutation(() => schema, { name: `delete${capitalizeName}` })
+        @Mutation(() => Boolean, { name: `delete${capitalizeName}` })
         async delete(@Args('id', { type: () => String }) id: string) {
             return await this.dataService.delete(id);
         }
