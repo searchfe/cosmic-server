@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { isSuccessfulQuery, fileds2MongoProjection } from '@/common/util/db';
 
@@ -35,7 +35,7 @@ export function BaseDataService<TSchema extends BaseSchema>(
 
         async update(data: DeepPartial<TSchema>): Promise<boolean> {
             const result = await this.model
-                .updateOne({ id: data.id }, data)
+                .updateOne({ _id: Types.ObjectId(data.id) }, data)
                 .exec();
             return isSuccessfulQuery(result);
         }

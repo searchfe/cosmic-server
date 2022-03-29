@@ -37,7 +37,7 @@ export class ColorResolver extends BaseResolver({
     service: ColorService,
     queryInput: QueryColorDTO,
     createInput: CreateColorDTO,
-    updateInput: CreateColorDTO,
+    updateInput: QueryColorDTO,
 }) {}
 
 @Resolver(() => Opacity)
@@ -46,7 +46,7 @@ export class OpacityResolver extends BaseResolver({
     service: OpacityService,
     queryInput: QueryOpacityDTO,
     createInput: CreateOpacityDTO,
-    updateInput: CreateOpacityDTO,
+    updateInput: QueryOpacityDTO,
 }) {}
 
 @Resolver(() => Font)
@@ -55,7 +55,7 @@ export class FontResolver extends BaseResolver({
     service: FontService,
     queryInput: QueryFontDTO,
     createInput: CreateFontDTO,
-    updateInput: CreateFontDTO,
+    updateInput: QueryFontDTO,
 }) {}
 
 @Resolver(() => Shadow)
@@ -64,7 +64,7 @@ export class ShadowResolver extends BaseResolver({
     service: ShadowService,
     queryInput: QueryShadowDTO,
     createInput: CreateShadowDTO,
-    updateInput: CreateShadowDTO,
+    updateInput: QueryShadowDTO,
 }) {}
 
 @Resolver(() => Border)
@@ -73,7 +73,7 @@ export class BorderResolver extends BaseResolver({
     service: BorderService,
     queryInput: QueryBorderDTO,
     createInput: CreateBorderDTO,
-    updateInput: CreateBorderDTO,
+    updateInput: QueryBorderDTO,
 }) {}
 
 @Resolver(() => Corner)
@@ -82,5 +82,5 @@ export class CornerResolver extends BaseResolver({
     service: CornerService,
     queryInput: QueryCornerDTO,
     createInput: CreateCornerDTO,
-    updateInput: CreateCornerDTO,
+    updateInput: QueryCornerDTO,
 }) {}
