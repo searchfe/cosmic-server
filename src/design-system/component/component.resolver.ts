@@ -22,4 +22,9 @@ export class ComponentResolver extends BaseResolver({
         const del = await this.componentService.deleteByTeamAndName(data);
         return del.deletedCount;
     }
+
+    @Mutation(() => Boolean, { name: 'updateComponentByTeamAndName' })
+    async updateByTeamAndName(@Args('data', { type: () => CreateComponentDTO }) data: CreateComponentDTO) {
+        return this.componentService.updateByTeamAndName(data);
+    }
 }
