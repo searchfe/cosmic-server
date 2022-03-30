@@ -5,22 +5,22 @@ import { CreateBaseDTO } from '../../../common/module/base.dto';
 @InputType()
 export class CreateFontDTO extends CreateBaseDTO {
     @Field()
-    style: string;
+    style?: string;
 
     @Field()
-    variant: string;
+    variant?: string;
 
     @Field()
-    weight: string;
+    weight?: string;
 
     @Field()
-    size: string;
+    size?: string;
 
     @Field()
-    lineHeight: string;
+    lineHeight?: string;
 
     @Field()
-    family: string;
+    family?: string;
 }
 
 @InputType()
