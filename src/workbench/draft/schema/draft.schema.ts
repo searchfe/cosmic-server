@@ -9,11 +9,11 @@ import { GraphQLJSON } from 'graphql-type-json';
 @ObjectType()
 export class Draft extends BaseSchema {
     @Field(() => ID)
-    @Prop({ auto: false, required: true })
+    @Prop({ type: () => Types.ObjectId, auto: false, required: true })
     project: Types.ObjectId;
 
     @Field(() => GraphQLJSON)
-    @Prop({ type: () => Object })
+    @Prop({ type: () => Object, default: '{}' })
     data: any;
 }
 

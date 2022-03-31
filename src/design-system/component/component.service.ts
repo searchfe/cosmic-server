@@ -8,7 +8,7 @@ import { isSuccessfulQuery } from '@/common/util/db';
 
 
 @Injectable()
-export class ComponentService extends BaseDataService(Component) {
+export class ComponentService extends BaseDataService({ schema: Component }) {
 
     @InjectModel(Component.name)
     private readonly projectModel: Model<Component>;
