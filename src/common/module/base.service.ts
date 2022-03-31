@@ -51,14 +51,14 @@ export function BaseDataService<TSchema extends BaseSchema>(options: {
         async update(data: DeepPartial<TSchema>): Promise<boolean> {
             const newData = transformObjectId(data, DataService.idFields);
             const result = await this.model
-                .updateOne({ id: data.id }, newData)
+                .updateOne({ _id: data.id }, newData)
                 .exec();
             return isSuccessfulQuery(result);
         }
 
         async delete(id: string): Promise<boolean> {
             // TODO: soft delete
-            const result = await this.model.deleteOne({ id });
+            const result = await this.model.deleteOne({ _id: id });
             return isSuccessfulQuery(result);
         }
 
