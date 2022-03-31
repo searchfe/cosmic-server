@@ -20,22 +20,38 @@ export interface IBaseDataService<TSchema extends BaseSchema> {
     ) => Promise<Class<TSchema>>;
 }
 
-export function BaseDataService<TSchema extends BaseSchema>(
+function transformObjectId(data: Record<string, any>, idFields: string[]) {
+    const newData = {
+        ...data,
+    };
+    idFields.forEach(fieldPath => {
+        if (newData[fieldPath] && typeof newData[fieldPath] === 'string') {
+            newData[fieldPath] = Types.ObjectId(newData[fieldPath]);
+        }
+    });
+    return newData;
+}
+
+export function BaseDataService<TSchema extends BaseSchema>(options: {
     schema: Class<TSchema>,
-): Class<IBaseDataService<TSchema>> {
+    idFields?: string[],
+}): Class<IBaseDataService<TSchema>> {
+    const { schema, idFields = [] } = options;
     class DataService implements IBaseDataService<TSchema> {
+        private static idFields = idFields;
         constructor(
             @InjectModel(schema.name)
             private readonly model: Model<Class<TSchema>>,
         ) {}
 
         async create(data: DeepPartial<TSchema>): Promise<Class<TSchema>> {
-            return await new this.model(data).save();
+            return await new this.model(transformObjectId(data, DataService.idFields)).save();
         }
 
         async update(data: DeepPartial<TSchema>): Promise<boolean> {
+            const newData = transformObjectId(data, DataService.idFields);
             const result = await this.model
-                .updateOne({ _id: Types.ObjectId(data.id) }, data)
+                .updateOne({ id: data.id }, newData)
                 .exec();
             return isSuccessfulQuery(result);
         }

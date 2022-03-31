@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BaseDataService } from '../../common/module/base.service';
-
-import { Draft } from './schema/draft.schema';
+import { Prefab } from './schema/prefab.schema';
 
 
 @Injectable()
-export class DraftService extends BaseDataService({ schema: Draft }) {}
-
+export class PrefabService extends BaseDataService({ schema: Prefab }) {}
