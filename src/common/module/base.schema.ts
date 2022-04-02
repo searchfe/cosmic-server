@@ -16,4 +16,7 @@ export class BaseSchema extends Document {
     @Field(() => ID)
     @Prop({ auto: false, required: true })
     team: Types.ObjectId;
+
+    @Field()
+    updatedAt: string;
 }
