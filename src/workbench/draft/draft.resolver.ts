@@ -12,5 +12,5 @@ export class DraftResolver extends BaseResolver({
     service: DraftService,
     queryInput: QueryDraftDTO,
     createInput: CreateDraftDTO,
-    updateInput: CreateDraftDTO,
+    updateInput: QueryDraftDTO,
 }) {}
