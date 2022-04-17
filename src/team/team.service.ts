@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Team } from './schema/team.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 
 import type { PermissionEnum } from './schema/team.dto';
 import type { MongoProjection } from '@/common/types';
@@ -49,7 +49,7 @@ export class TeamService {
             .findByIdAndUpdate(teamId, {
                 $addToSet: {
                     members: {
-                        user: Types.ObjectId(member.user),
+                        user: member.user,
                         permission: member.permission,
                     },
                 },
