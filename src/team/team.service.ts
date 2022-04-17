@@ -30,7 +30,13 @@ export class TeamService {
     }
 
     async findAll(query = {}) {
-        return await this.teamModel.find(query).lean(false).exec();
+        const newQuery = { ...query } as Record<string, any>;
+        if (newQuery.members && newQuery.members.user) {
+            const user = newQuery.members.user;
+            delete newQuery.members;
+            newQuery['members.user'] = user;
+        }
+        return await this.teamModel.find(newQuery).lean(false).exec();
     }
 
     async update(team: Pick<Team, 'name' | 'id'>) {
