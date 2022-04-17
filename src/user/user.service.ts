@@ -34,6 +34,7 @@ export class UserService {
         return await this.userModel
             .findOne(user)
             .select({ password: 0 })
+            .lean()
             .exec();
     }
 }

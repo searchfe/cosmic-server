@@ -4,6 +4,7 @@ import { UserInputError } from 'apollo-server-core';
 import { User } from './schema/user.schema';
 import { CreateUserDTO, UpdateUserDTO } from './schema/user.dto';
 import { UserService } from './user.service';
+import { Public } from '../common/decorator/public';
 
 
 @Resolver(() => User)
@@ -18,6 +19,7 @@ export class UserResolver {
         return await this.userService.findOne({ id });
     }
 
+    @Public()
     @Mutation(() => User)
     async createUser(@Args('user') user: CreateUserDTO): Promise<User> {
         return await this.userService.create(user);

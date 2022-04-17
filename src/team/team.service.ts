@@ -29,8 +29,8 @@ export class TeamService {
         return await this.teamModel.create(team);
     }
 
-    async findAll() {
-        return await this.teamModel.find().lean(false).exec();
+    async findAll(query = {}) {
+        return await this.teamModel.find(query).lean(false).exec();
     }
 
     async update(team: Pick<Team, 'name' | 'id'>) {
