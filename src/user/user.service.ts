@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import type { QueryUserDTO } from './schema/user.dto';
 
@@ -31,10 +31,24 @@ export class UserService {
     }
 
     async findOne(user: Partial<QueryUserDTO>) {
-        return await this.userModel
-            .findOne(user)
+        const newQuery: Record<string, any> = {
+            ...user,
+        };
+        if (newQuery.id) {
+            newQuery._id = Types.ObjectId(newQuery.id);
+            delete newQuery.id;
+        }
+        const result = await this.userModel
+            .findOne(newQuery)
             .select({ password: 0 })
             .lean()
             .exec();
+        if (result._id) {
+            return {
+                ...result,
+                id: result._id,
+            };
+        }
+        return result;
     }
 }
