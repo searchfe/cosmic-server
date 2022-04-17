@@ -10,10 +10,10 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     // app.useGlobalInterceptors(new ExceptionInterceptor());
     // app.useGlobalFilters(new ErrorFilter());
-    app.enableCors({
-        methods: 'GET',
-        maxAge: 3600,
-    });
+    // app.enableCors({
+    //     methods: 'GET',
+    //     maxAge: 3600,
+    // });
     const config = app.get(ConfigService);
     app.useStaticAssets(config.LOCAL_STATIC_ROOT, {
         prefix: config.STATIC_PREFIX,
@@ -28,7 +28,7 @@ async function bootstrap() {
     app.setBaseViewsDir([config.LOCAL_WEB_ROOT]);
 
     app.useGlobalFilters(new HttpExceptionFilter());
-
+    app.enableCors();
     await app.listen(config.PORT || 3001);
 }
 bootstrap();

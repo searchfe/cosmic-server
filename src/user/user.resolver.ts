@@ -37,4 +37,10 @@ export class UserResolver {
         };
         return await this.userService.update(newUser);
     }
+
+    @Public()
+    @Query(() => [User], { name: 'users' })
+    async findAll() {
+        return await this.userService.findAll();
+    }
 }
