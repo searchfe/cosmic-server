@@ -9,6 +9,9 @@ export class CreateBaseDTO {
     @Field()
     desc?: string;
 
+    @Field()
+    preview?: string;
+
     @Field(() => ID)
     team: string;
 }
