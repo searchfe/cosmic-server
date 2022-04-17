@@ -7,6 +7,7 @@ import {
     CreateTeamDTO,
     PermissionEnum,
     UpdateTeamDTO,
+    QueryTeamDTO
 } from './schema/team.dto';
 import { Team } from './schema/team.schema';
 import { TeamService } from './team.service';
@@ -27,8 +28,11 @@ export class TeamResolver {
     }
 
     @Query(() => [Team], { name: 'teams' })
-    async getAllTeams() {
-        return await this.teamService.findAll();
+    async getAllTeams(
+        @Args({ type: () => QueryTeamDTO, name: 'query', nullable: true })
+        query: QueryTeamDTO
+    ) {
+        return await this.teamService.findAll(query);
     }
 
     @Mutation(() => Team)

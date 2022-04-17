@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-// import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
-// import { GqlAuthGuard } from '@/auth/guard/gql-auth.guard';
+import { GqlAuthGuard } from '@/auth/guard/gql-auth.guard';
 import { GQLConfigService } from './gql.service';
 
 
@@ -13,10 +13,10 @@ import { GQLConfigService } from './gql.service';
     ],
     providers: [
         GQLConfigService,
-        // {
-        //     provide: APP_GUARD,
-        //     useClass: GqlAuthGuard
-        // }],
+        {
+            provide: APP_GUARD,
+            useClass: GqlAuthGuard
+        }
     ],
 })
 export class GQLModule {}

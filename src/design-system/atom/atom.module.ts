@@ -6,6 +6,9 @@ import { Shadow, ShadowSchema } from './schema/shadow.schema';
 import { Border, BorderSchema } from './schema/border.schema';
 import { Corner, CornerSchema } from './schema/corner.schema';
 import { Opacity, OpacitySchema } from './schema/opacity.schema';
+import { TeamService } from '@/team/team.service';
+import { Team, TeamSchema } from '@/team/schema/team.schema';
+
 import {
     ColorResolver,
     FontResolver,
@@ -33,6 +36,7 @@ import {
             { name: Border.name, schema: BorderSchema },
             { name: Corner.name, schema: CornerSchema },
             { name: Opacity.name, schema: OpacitySchema },
+            { name: Team.name, schema: TeamSchema },
         ]),
     ],
     providers: [
@@ -48,6 +52,7 @@ import {
         CornerResolver,
         OpacityService,
         OpacityResolver,
+        TeamService,
     ],
 })
 export class AtomModule {}

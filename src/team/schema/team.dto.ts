@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 
 export enum PermissionEnum {
@@ -28,4 +28,25 @@ export class AddTeamMemberDTO {
 
     @Field({ nullable: true })
     permission?: PermissionEnum;
+}
+
+@ObjectType()
+@InputType()
+class QueryTeamMemberDTO {
+    @Field(() => String)
+    user: string;
+}
+
+@InputType()
+export class QueryTeamDTO  {
+    @Field()
+    id?: string;
+
+    @Field()
+    name?: string;
+
+    @Field()
+
+    @Field(() => QueryTeamMemberDTO, { nullable: true })
+    members?: QueryTeamMemberDTO;
 }

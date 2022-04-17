@@ -1,12 +1,15 @@
-import { Query, Mutation, Args, Resolver, Subscription } from '@nestjs/graphql';
+import { Query, Mutation, Args, Resolver, Subscription, Context } from '@nestjs/graphql';
 import { capitalize } from 'lodash';
-import { Inject } from '@nestjs/common';
+import { Inject, CACHE_MANAGER } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 import { UserInputError } from 'apollo-server-core';
 
 import type { BaseSchema } from './base.schema';
 import type { IBaseDataService } from './base.service';
 import type { Class, DeepPartial } from 'utility-types';
+import { Public } from '../decorator/public';
+import { Cache } from 'cache-manager';
+import { TeamService } from '../../team/team.service';
 
 
 const pubsub = new PubSub();
@@ -41,6 +44,12 @@ export function BaseResolver<
     class BaseResolver implements IBaseResolver<TSchema> {
         @Inject(service)
         private readonly dataService: TService;
+
+        @Inject(CACHE_MANAGER)
+        private cacheManager: Cache;
+
+        @Inject(TeamService)
+        private teamService: TeamService;
 
         @Mutation(() => schema, { name: `create${capitalizeName}` })
         async create(
@@ -81,19 +90,42 @@ export function BaseResolver<
             return await this.dataService.delete(id);
         }
 
+        @Public()
         @Query(() => schema, { name: `get${capitalizeName}`, nullable: true })
         async findOne(
             @Args('id', { type: () => String })
-            id: string
+            id: string,
         ) {
             return await this.dataService.findOne(id);
         }
 
+        @Public()
         @Query(() => [schema], { name: `${lowerCaseName}s` })
         async findAll(
             @Args({ type: () => queryInput, name: 'query', nullable: true })
-            query?: TCreateInput
+            query?: TCreateInput,
+            @Context('req') ctx?: any
         ) {
+            const token = ctx.headers['authorization'];
+            if (token) {
+                const user = await this.cacheManager.get(`user-${token}`);
+                const userId = (user as { _id: string })?._id;
+                if (userId) {
+                    const teams = await this.teamService.findAll();
+                    const team = teams.filter(team => {
+                        return team.members
+                            .filter(member => member.user.toString().indexOf(userId) > -1)
+                            .length >0;
+                    });
+                    const teamId = (team[0] as { _id: string })?._id;
+                    if (teamId) {
+                        if (!query) {
+                            query = {} as TCreateInput;
+                        }
+                        query.team = teamId.toString();
+                    }
+                }
+            }
             return await this.dataService.findAll(query);
         }
 

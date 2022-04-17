@@ -13,6 +13,10 @@ export class BaseSchema extends Document {
     @Prop({ required: true })
     name: string;
 
+    @Field(() => String)
+    @Prop({ })
+    desc?: string;
+
     @Field(() => ID)
     @Prop({ auto: false, required: true })
     team: Types.ObjectId;
