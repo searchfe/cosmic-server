@@ -29,7 +29,7 @@
         "@nestjs/mongoose": "^8.0.1",
         "@nestjs/passport": "^8.0.1",
         "@nestjs/platform-express": "^8.0.6",
-        "apollo-server-core": "^3.3.0",
+        "apollo-server-core": "^3.12.1",
         "apollo-server-express": "^3.3.0",
         "cache-manager": "^3.6.0",
         "cache-manager-redis-store": "^2.0.0",
